@@ -32,6 +32,20 @@ The editor's red underlines and the errors from `tsc` are two ways of seeing Typ
 
 For now, the important idea is that describing the shape of a value lets TypeScript detect incorrect assumptions before runtime. The interface syntax will be explored in more detail later.
 
+### Catching arguments in the wrong order
+
+Moving the output into a helper function created another opportunity for a logic error. Its parameter annotations describe both the expected types and their order:
+
+```ts
+const logTodo = (id: number, title: string, completed: boolean) => {
+  // ...
+};
+```
+
+If values are passed in the wrong order, such as placing the `boolean` where the function expects a `string`, TypeScript marks the argument as an error. Correcting the call to `logTodo(id, title, completed)` makes the error disappear.
+
+Type annotations on function parameters therefore act as a contract for every call to that function. TypeScript checks each supplied argument against the corresponding parameter before the code runs.
+
 ### Running the program
 
 The explicit two-step workflow is:
@@ -52,6 +66,19 @@ npx tsx index.ts
 ```sh
 npx tsc --noEmit
 ```
+
+> **Aside: `tsx` does not perform full type-checking**
+>
+> `npx tsx index.ts` prioritizes quickly transpiling and running the program. It can execute code even when the editor is showing a TypeScript error, and it does not emit a persistent `.js` file beside the source.
+>
+> Use the two tools for their separate jobs:
+>
+> ```sh
+> npx tsc --noEmit   # Check the configured project's types
+> npx tsx index.ts   # Transpile and run the program
+> ```
+>
+> An editor's red underlines provide immediate feedback, but `npx tsc --noEmit` is the definitive project-wide type check.
 
 > **Aside: `tsconfig.json` is present but will not be loaded**
 >
