@@ -12,6 +12,10 @@ This example makes an HTTP request with Axios and logs the returned JSON. Its ma
 - TypeScript can infer many types from context, so useful checking does not always require explicit type annotations. For example, `url` is inferred to be a string.
 - Libraries can provide type declarations that describe their JavaScript APIs. That information enables autocomplete and helps TypeScript check calls such as `axios.get(url)`.
 
+### What is a type?
+
+In TypeScript, a **type** is an easy way to refer to the different properties and methods that a value has. In other words, a type describes the value's structure and the operations TypeScript considers valid for it.
+
 ### Catching incorrect property access
 
 The first version used property names with incorrect names and casing. JavaScript allowed those accesses and produced `undefined` at runtime. TypeScript can catch that mistake before the program runs once it knows the expected structure of the data.
