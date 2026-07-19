@@ -185,3 +185,36 @@ let now: Date = new Date();
 ```
 
 The annotation tells TypeScript what values may later be assigned to that variable. For example, after `apples` is declared as a `number`, assigning a `string` to it is a type error.
+
+### Array and object annotations
+
+An array annotation states the type of values the array contains by placing `[]` after the element type:
+
+```ts
+let colors: string[] = ["red", "green", "blue"];
+let myNumbers: number[] = [1, 2, 3];
+let truths: boolean[] = [true, true, false];
+```
+
+For example, `string[]` means “an array of strings.” TypeScript can use this information to reject an element of the wrong type and to provide the properties and methods available on both the array and its elements.
+
+An object literal annotation lists the required properties and the type of each one:
+
+```ts
+let point: {
+  x: number;
+  y: number;
+} = {
+  x: 10,
+  y: 20,
+};
+```
+
+Here, `point` must have numeric `x` and `y` properties. TypeScript reports an error when a required property is missing or has an incompatible value.
+
+A class name can also be used as the type of its instances:
+
+```ts
+class Car {}
+let car: Car = new Car();
+```
