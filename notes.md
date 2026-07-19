@@ -159,3 +159,29 @@ const annotatedName: string = "Ada"; // We explicitly state string
 ```
 
 These ideas can initially seem at odds: why write a type when TypeScript can infer it? They are complementary tools. Inference avoids unnecessary type annotations when the intended type is obvious, while annotations are useful in situations where TypeScript lacks enough information or where we want to state and enforce an intended type explicitly. Future lessons will explore when each approach is appropriate.
+
+### Variable annotations
+
+For a variable, the type annotation appears after the variable name and before the assignment:
+
+```ts
+let variableName: type = value;
+```
+
+Examples with primitive types:
+
+```ts
+let apples: number = 5;
+let speed: string = "fast";
+let hasName: boolean = true;
+let nothingMuch: null = null;
+let nothing: undefined = undefined;
+```
+
+Built-in object types can be annotations too:
+
+```ts
+let now: Date = new Date();
+```
+
+The annotation tells TypeScript what values may later be assigned to that variable. For example, after `apples` is declared as a `number`, assigning a `string` to it is a type error.
