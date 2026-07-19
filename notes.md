@@ -147,3 +147,15 @@ const red = new Color(); // Color
 - An instance of a custom class has that class as its type.
 
 Hovering over these variables in VS Code reveals the types TypeScript inferred. VS Code uses TypeScript's language tooling to provide this information, along with autocomplete, navigation, and inline error feedback. Type inference means TypeScript can understand and check many values even when no explicit type annotation was written.
+
+### Type annotations vs. type inference
+
+- A **type annotation** is a small piece of code we add to tell TypeScript what type of value a variable will refer to.
+- **Type inference** is TypeScript attempting to determine a variable's type from the code and value assigned to it.
+
+```ts
+const inferredName = "Ada";         // TypeScript infers string
+const annotatedName: string = "Ada"; // We explicitly state string
+```
+
+These ideas can initially seem at odds: why write a type when TypeScript can infer it? They are complementary tools. Inference avoids unnecessary type annotations when the intended type is obvious, while annotations are useful in situations where TypeScript lacks enough information or where we want to state and enforce an intended type explicitly. Future lessons will explore when each approach is appropriate.
