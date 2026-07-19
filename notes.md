@@ -16,6 +16,28 @@ This example makes an HTTP request with Axios and logs the returned JSON. Its ma
 
 In TypeScript, a **type** is an easy way to refer to the different properties and methods that a value has. In other words, a type describes the value's structure and the operations TypeScript considers valid for it.
 
+Types can be divided into two broad categories:
+
+- **Primitive types:** `number`, `string`, `boolean`, `null`, `undefined`, and similar built-in values.
+- **Object types:** objects, arrays, dates, functions, and objects whose structures we define ourselves.
+
+Types matter because:
+
+- The TypeScript compiler uses them to analyze code and report errors.
+- They communicate what values represent and how they may be used, making the code easier for other developers to understand.
+
+For example, the `Todo` interface tells both developers and TypeScript that code treating a value as a `Todo` can rely on these properties:
+
+```ts
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+```
+
+TypeScript can therefore check accesses to those properties and reject references to properties that are not part of the interface. This is a compile-time description, not a runtime guarantee that an external API actually returned matching data.
+
 ### Catching incorrect property access
 
 The first version used property names with incorrect names and casing. JavaScript allowed those accesses and produced `undefined` at runtime. TypeScript can catch that mistake before the program runs once it knows the expected structure of the data.
