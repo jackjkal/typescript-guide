@@ -124,3 +124,26 @@ npx tsc --noEmit
 - `tsconfig.json` controls project-wide compiler behavior, including the JavaScript target, module format, and strictness.
 - Prefer running `npx tsc` from the directory containing `tsconfig.json` when you want that project configuration applied.
 - `response.data` is external data. Eventually, describing its expected shape with a TypeScript type will make code that uses it safer, but a type alone cannot prove that the server actually returned that shape.
+
+## `features` — Exploring inferred types
+
+TypeScript maintains descriptions of JavaScript's built-in types, including their available properties and methods. This allows it to understand a value created with `new Date()` and recognize methods such as `getMonth()` without any type annotation from us.
+
+TypeScript can also infer types from code we define:
+
+```ts
+const today = new Date(); // Date
+
+const person = {
+  age: 20,
+}; // { age: number }
+
+class Color {}
+const red = new Color(); // Color
+```
+
+- A constructor such as `Date` determines the type of the instance it creates.
+- An object literal's type is inferred from its property names and values.
+- An instance of a custom class has that class as its type.
+
+Hovering over these variables in VS Code reveals the types TypeScript inferred. VS Code uses TypeScript's language tooling to provide this information, along with autocomplete, navigation, and inline error feedback. Type inference means TypeScript can understand and check many values even when no explicit type annotation was written.
