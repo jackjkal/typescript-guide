@@ -218,3 +218,36 @@ A class name can also be used as the type of its instances:
 class Car {}
 let car: Car = new Car();
 ```
+
+### Function annotations
+
+A variable that refers to a function can be annotated with the types of its parameters and return value:
+
+```ts
+const logNumber: (i: number) => void = (i: number) => {
+  console.log(i);
+};
+```
+
+This declaration contains similar-looking type information and executable code:
+
+- `(i: number) => void` on the left is the type annotation for `logNumber`. It says the value must be a function that accepts a `number` and returns no useful value.
+- `(i: number) => { console.log(i); }` on the right is the actual function assigned to the variable.
+- In a function type, the arrow is followed by the **return type** (`void`). In the function implementation, the arrow is followed by the **function body**.
+
+The repeated syntax can look noisy at first. TypeScript can often infer some of it from the other side of the assignment, so both sides do not always need to repeat the same information.
+
+### Inference can replace obvious annotations
+
+When a variable is initialized in its declaration, TypeScript uses the assigned value to infer its type:
+
+```ts
+let apples = 5;       // inferred as number
+let speed = "fast";   // inferred as string
+let hasName = true;   // inferred as boolean
+let now = new Date(); // inferred as Date
+```
+
+Hovering over `apples` in VS Code still shows `number` after the explicit `: number` annotation is removed. The annotation disappeared from the source, but the variable did not lose its type—TypeScript inferred the same information from `5`.
+
+The same applies to the initialized arrays, class instance, and object literal in this lesson. Their explicit variable annotations are redundant because their assigned values give TypeScript enough information. This demonstrates the tension the next lesson will explore: use inference when TypeScript can determine the intended type accurately, and add annotations when it cannot or when an explicit contract is useful.
