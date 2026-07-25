@@ -340,3 +340,42 @@ Without an annotation, TypeScript sees the initial value `false` and infers `boo
 - A `number` when a positive number is found
 
 The `|` means **or**. The annotation `boolean | number` is a **union type**, so `numberAboveZero` may contain either a boolean or a number. Here, the explicit annotation broadens the type beyond what TypeScript could infer from the initial value alone.
+
+## `features/annotations/functions.ts` — Annotating functions
+
+Type annotations for functions tell TypeScript:
+
+- What type of value each parameter will receive
+- What type of value the function will return
+
+The first example is:
+
+```ts
+const add = (a: number, b: number): number => {
+  return a + b;
+};
+```
+
+This annotates the function itself:
+
+- `a: number` says the `a` parameter must be a number.
+- `b: number` says the `b` parameter must be a number.
+- `: number` after the parameter list says the function must return a number.
+
+This differs from the earlier example:
+
+```ts
+const logNumber: (i: number) => void = (i: number) => {
+  console.log(i);
+};
+```
+
+There, `(i: number) => void` annotates the **variable** `logNumber` with the kind of function it may reference. In `add`, the annotations are attached directly to the function's parameters and return value.
+
+### Function inference
+
+TypeScript can inspect a function's `return` statements and infer its return type. For `return a + b`, it can determine that `add` returns a number once it knows that both parameters are numbers.
+
+TypeScript generally does not infer standalone function parameter types from the function body. Parameters therefore need annotations unless their types are supplied by some surrounding context. For now, remember the basic rule: **annotate the parameters; TypeScript can often infer the return type.**
+
+The explicit return annotation is still useful as a contract: it makes TypeScript check that the implementation returns the type we intended.
