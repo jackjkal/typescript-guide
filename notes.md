@@ -251,3 +251,22 @@ let now = new Date(); // inferred as Date
 Hovering over `apples` in VS Code still shows `number` after the explicit `: number` annotation is removed. The annotation disappeared from the source, but the variable did not lose its type—TypeScript inferred the same information from `5`.
 
 The same applies to the initialized arrays, class instance, and object literal in this lesson. Their explicit variable annotations are redundant because their assigned values give TypeScript enough information. This demonstrates the tension the next lesson will explore: use inference when TypeScript can determine the intended type accurately, and add annotations when it cannot or when an explicit contract is useful.
+
+### When variable inference works
+
+When a variable is declared and initialized on the same line, TypeScript can use the initial value to infer its type:
+
+```ts
+const color = "red"; // inferred from the value as a string
+```
+
+If the declaration has neither an annotation nor an initial value, TypeScript has no value at that point from which to infer a useful type:
+
+```ts
+let apples; // any
+apples = 5;
+```
+
+Assigning `5` later does not provide the same declaration-time inference demonstrated by `let apples = 5`. The `any` type effectively opts the value out of normal type safety, so it is usually something to avoid; it will be examined in more detail later.
+
+The course's general rule is to **rely on type inference whenever it can determine the intended type**, and add explicit annotations only in the less common situations where inference is insufficient or does not express the intended contract.
