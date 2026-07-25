@@ -411,3 +411,37 @@ const multiply = function (a: number, b: number): number {
 - Parameter annotations follow each parameter name.
 - The return annotation follows the closing parenthesis.
 - `multiply` is the variable's name; the function expression after `=` is anonymous.
+
+### `void` and `never`
+
+`void` describes a function that completes without returning a useful value:
+
+```ts
+const logger = (message: string): void => {
+  console.log(message);
+};
+```
+
+At runtime, a JavaScript function with no `return` statement evaluates to `undefined`. With modern strict null checking, `null` is distinct from `void`; older or non-strict TypeScript configurations may allow `null` in places where they otherwise would not.
+
+`never` describes a function that cannot complete normally—it never reaches a point where it returns to its caller. A function that always throws is the standard example:
+
+```ts
+const throwError = (message: string): never => {
+  throw new Error(message);
+};
+```
+
+This is a special case. A function that throws only on one path but returns normally on another should use the type of its normal return value, not `never`:
+
+```ts
+const throwError = (message: string): string => {
+  if (!message) {
+    throw new Error(message);
+  }
+
+  return message;
+};
+```
+
+The throwing path does not add another return type. This function is annotated as `string` because every path that completes normally returns a string.
