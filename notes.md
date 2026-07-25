@@ -270,3 +270,32 @@ apples = 5;
 Assigning `5` later does not provide the same declaration-time inference demonstrated by `let apples = 5`. The `any` type effectively opts the value out of normal type safety, so it is usually something to avoid; it will be examined in more detail later.
 
 The course's general rule is to **rely on type inference whenever it can determine the intended type**, and add explicit annotations only in the less common situations where inference is insufficient or does not express the intended contract.
+
+### When annotations are required: functions that return `any`
+
+The first of three scenarios where we should manually add an annotation is when a function returns `any`.
+
+`JSON.parse` is the key example. The result depends entirely on the JSON string supplied at runtime:
+
+```ts
+JSON.parse("false");              // boolean value
+JSON.parse('"hello"');            // string value
+JSON.parse('{"x": 10, "y": 20}'); // object value
+```
+
+TypeScript cannot determine a single useful result type from the `string` parameter, so `JSON.parse` returns `any`. We can supply the expected structure manually:
+
+```ts
+const json = '{"x": 10, "y": 20}';
+const coordinates: { x: number; y: number } = JSON.parse(json);
+```
+
+Now TypeScript can check later uses of `coordinates`, including its property names.
+
+> **Aside: beware of `any`**
+>
+> `any` is a TypeScript type, just like `string` or `boolean`, but it means TypeScript has no useful type information for the value. It largely disables checking for operations involving that value.
+>
+> If `coordinates` is `any`, even an invalid access such as `coordinates.nonExistent` is accepted. This removes one of TypeScript's main protections, so avoid allowing values to remain `any`.
+>
+> An annotation restores compile-time checking of how our code uses the parsed value, but it does not validate the JSON at runtime. If the string comes from an untrusted or external source, its actual contents may still differ from the annotated structure.
