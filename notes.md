@@ -397,3 +397,17 @@ const subtract = (a: number, b: number): number => {
 ```
 
 The compiler now exposes the missing `return`. The course's rule is therefore: **always annotate function parameters and return values.** Parameter annotations supply information TypeScript usually cannot infer, while return annotations help catch implementations that do not match their intended result.
+
+### Anonymous function annotations
+
+An anonymous function has no name of its own and is often assigned to a variable. Its parameters and return value are annotated in the same positions as a named function declaration:
+
+```ts
+const multiply = function (a: number, b: number): number {
+  return a * b;
+};
+```
+
+- Parameter annotations follow each parameter name.
+- The return annotation follows the closing parenthesis.
+- `multiply` is the variable's name; the function expression after `=` is anonymous.
