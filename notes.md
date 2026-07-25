@@ -318,3 +318,25 @@ for (let i = 0; i < words.length; i++) {
 The `: boolean` annotation tells TypeScript what `foundWord` may contain before it sees the later assignment. TypeScript can then reject an incompatible assignment such as `foundWord = "yes"`.
 
 An annotation does not initialize the variable—it only describes its allowed type. Code must still account for the possibility that no assignment occurs. In this example, `foundWord` remains uninitialized if the target word is absent. When an appropriate initial value exists, `let foundWord = false` would avoid that state and allow TypeScript to infer `boolean`; delayed initialization is useful when assigning a meaningful value immediately is not possible.
+
+### When annotations are required: inference is too narrow
+
+The third scenario is a variable intentionally designed to hold more than one type:
+
+```ts
+const numbers = [-10, -1, 12];
+let numberAboveZero: boolean | number = false;
+
+for (let i = 0; i < numbers.length; i++) {
+  if (numbers[i] > 0) {
+    numberAboveZero = numbers[i];
+  }
+}
+```
+
+Without an annotation, TypeScript sees the initial value `false` and infers `boolean`. Assigning a number later would then be an error, even though the program deliberately uses:
+
+- `false` to mean that no positive number has been found
+- A `number` when a positive number is found
+
+The `|` means **or**. The annotation `boolean | number` is a **union type**, so `numberAboveZero` may contain either a boolean or a number. Here, the explicit annotation broadens the type beyond what TypeScript could infer from the initial value alone.
