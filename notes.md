@@ -445,3 +445,33 @@ const throwError = (message: string): string => {
 ```
 
 The throwing path does not add another return type. This function is annotated as `string` because every path that completes normally returns a string.
+
+### Destructured parameters
+
+ES2015 destructuring and TypeScript annotations remain separate. Replace the ordinary parameter name with a destructuring pattern, then place the type annotation after that entire pattern:
+
+```ts
+const logWeather = (
+  { date, weather }: { date: Date; weather: string }
+): void => {
+  console.log(date);
+  console.log(weather);
+};
+```
+
+The two neighboring object-shaped pieces serve different purposes:
+
+- `{ date, weather }` is JavaScript destructuring. It extracts the two properties into local variables.
+- `: { date: Date; weather: string }` is the TypeScript annotation. It describes the object accepted by the function.
+- The final `: void` annotates the function's return value.
+
+Without destructuring, the same parameter type could be written as:
+
+```ts
+const logWeather = (
+  forecast: { date: Date; weather: string }
+): void => {
+  console.log(forecast.date);
+  console.log(forecast.weather);
+};
+```
