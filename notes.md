@@ -299,3 +299,22 @@ The annotation replaces the unhelpful inferred `any` for this variable. TypeScri
 > If `coordinates` is `any`, even an invalid access such as `coordinates.nonExistent` is accepted. This removes one of TypeScript's main protections, so avoid allowing values to remain `any`.
 >
 > An annotation restores compile-time checking of how our code uses the parsed value, but it does not validate the JSON at runtime. If the string comes from an untrusted or external source, its actual contents may still differ from the annotated structure.
+
+### When annotations are required: delayed initialization
+
+The second scenario is when a variable is declared first and assigned a value later. Because there is no initial value at the declaration, we provide the intended type explicitly:
+
+```ts
+const words = ["red", "green", "blue"];
+let foundWord: boolean;
+
+for (let i = 0; i < words.length; i++) {
+  if (words[i] === "green") {
+    foundWord = true;
+  }
+}
+```
+
+The `: boolean` annotation tells TypeScript what `foundWord` may contain before it sees the later assignment. TypeScript can then reject an incompatible assignment such as `foundWord = "yes"`.
+
+An annotation does not initialize the variable—it only describes its allowed type. Code must still account for the possibility that no assignment occurs. In this example, `foundWord` remains uninitialized if the target word is absent. When an appropriate initial value exists, `let foundWord = false` would avoid that state and allow TypeScript to infer `boolean`; delayed initialization is useful when assigning a meaningful value immediately is not possible.
