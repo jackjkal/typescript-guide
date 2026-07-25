@@ -1,5 +1,7 @@
 # TypeScript Course Notes
 
+<a id="fetchjson"></a>
+
 ## `fetchjson` — First look at TypeScript
 
 This example makes an HTTP request with Axios and logs the returned JSON. Its main purpose is to show the basic TypeScript workflow rather than to introduce lots of new syntax.
@@ -125,7 +127,9 @@ npx tsc --noEmit
 - Prefer running `npx tsc` from the directory containing `tsconfig.json` when you want that project configuration applied.
 - `response.data` is external data. Eventually, describing its expected shape with a TypeScript type will make code that uses it safer, but a type alone cannot prove that the server actually returned that shape.
 
-## `features` — Exploring inferred types
+<a id="types-and-variable-annotations"></a>
+
+## `features` — Types and variable annotations
 
 TypeScript maintains descriptions of JavaScript's built-in types, including their available properties and methods. This allows it to understand a value created with `new Date()` and recognize methods such as `getMonth()` without any type annotation from us.
 
@@ -341,6 +345,8 @@ Without an annotation, TypeScript sees the initial value `false` and infers `boo
 
 The `|` means **or**. The annotation `boolean | number` is a **union type**, so `numberAboveZero` may contain either a boolean or a number. Here, the explicit annotation broadens the type beyond what TypeScript could infer from the initial value alone.
 
+<a id="function-annotations"></a>
+
 ## `features/annotations/functions.ts` — Annotating functions
 
 Type annotations for functions tell TypeScript:
@@ -475,3 +481,51 @@ const logWeather = (
   console.log(forecast.weather);
 };
 ```
+
+<a id="object-annotations"></a>
+
+## `features/annotations/objects.ts` — Object annotations
+
+TypeScript can infer the shape of an object literal, including nested objects and methods:
+
+```ts
+const profile = {
+  name: "alex",
+  age: 20,
+  coords: {
+    lat: 0,
+    lng: 15,
+  },
+  setAge(age: number): void {
+    this.age = age;
+  },
+};
+```
+
+When destructuring an object with an explicit annotation, the destructuring pattern comes first and the type describing that pattern follows it:
+
+```ts
+const { age }: { age: number } = profile;
+```
+
+Nested destructuring follows the same rule:
+
+```ts
+const {
+  coords: { lat, lng },
+}: {
+  coords: {
+    lat: number;
+    lng: number;
+  };
+} = profile;
+```
+
+The type annotation mirrors the object structure being destructured. Here, the destructuring pattern reaches through `coords` to extract `lat` and `lng`, so the annotation describes a `coords` property containing numeric `lat` and `lng` properties.
+
+The syntax is visually dense because two similar structures appear beside each other:
+
+- `{ coords: { lat, lng } }` performs the JavaScript destructuring.
+- `{ coords: { lat: number; lng: number } }` describes the TypeScript type.
+
+They resemble each other, but the first is executable JavaScript and the second is compile-time type information.
