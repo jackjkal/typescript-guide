@@ -283,14 +283,14 @@ JSON.parse('"hello"');            // string value
 JSON.parse('{"x": 10, "y": 20}'); // object value
 ```
 
-TypeScript cannot determine a single useful result type from the `string` parameter, so `JSON.parse` returns `any`. We can supply the expected structure manually:
+TypeScript cannot determine a single useful result type from the `string` parameter, so `JSON.parse` returns `any`. In the example, we fixed this by explicitly annotating the parsed result with its expected structure:
 
 ```ts
 const json = '{"x": 10, "y": 20}';
 const coordinates: { x: number; y: number } = JSON.parse(json);
 ```
 
-Now TypeScript can check later uses of `coordinates`, including its property names.
+The annotation replaces the unhelpful inferred `any` for this variable. TypeScript can now check later uses of `coordinates`, including its property names.
 
 > **Aside: beware of `any`**
 >
