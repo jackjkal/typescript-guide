@@ -376,6 +376,24 @@ There, `(i: number) => void` annotates the **variable** `logNumber` with the kin
 
 TypeScript can inspect a function's `return` statements and infer its return type. For `return a + b`, it can determine that `add` returns a number once it knows that both parameters are numbers.
 
-TypeScript generally does not infer standalone function parameter types from the function body. Parameters therefore need annotations unless their types are supplied by some surrounding context. For now, remember the basic rule: **annotate the parameters; TypeScript can often infer the return type.**
+TypeScript generally does not infer standalone function parameter types from the function body. Parameters therefore need annotations unless their types are supplied by some surrounding context.
 
-The explicit return annotation is still useful as a contract: it makes TypeScript check that the implementation returns the type we intended.
+Although TypeScript can infer return types, the course recommends explicitly annotating them too. Inference describes what the implementation actually does, which may differ from what the developer intended:
+
+```ts
+const subtract = (a: number, b: number) => {
+  a - b;
+};
+```
+
+The missing `return` is a developer mistake. TypeScript correctly infers `void` because the function does not return a value, but inference does not know that the developer intended to return a number.
+
+Adding a return annotation turns that intention into a contract:
+
+```ts
+const subtract = (a: number, b: number): number => {
+  a - b; // Error: a function declared to return number returns nothing
+};
+```
+
+The compiler now exposes the missing `return`. The course's rule is therefore: **always annotate function parameters and return values.** Parameter annotations supply information TypeScript usually cannot infer, while return annotations help catch implementations that do not match their intended result.
