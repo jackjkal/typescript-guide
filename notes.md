@@ -570,3 +570,36 @@ Read `string[][]` as “an array of arrays of strings”:
 ```text
 string[][] → outer array → inner string[] arrays → string elements
 ```
+
+### Why typed arrays matter
+
+Knowing an array's element type lets TypeScript carry useful information through common array operations.
+
+**Inference when extracting values**
+
+```ts
+const car = carMakers[0];
+const myCar = carMakers.pop();
+```
+
+TypeScript knows that values obtained from `carMakers` are strings. An operation such as `pop()` can also produce `undefined` when the array is empty; whether that possibility appears in all indexed-access types depends on the compiler's strictness settings.
+
+**Preventing incompatible additions**
+
+```ts
+carMakers.push(100); // Error: number is not assignable to string
+```
+
+Because `carMakers` is a `string[]`, TypeScript prevents a number from being added accidentally.
+
+**Help inside array callbacks**
+
+```ts
+carMakers.map((car: string): string => {
+  return car.toUpperCase();
+});
+```
+
+Array methods such as `map`, `forEach`, and `filter` know the array's element type. That gives their callback parameters useful checking and autocomplete. In this example, TypeScript can already infer that `car` is a string from `carMakers`, though the course's explicit function-annotation style makes the contract visible.
+
+Typed arrays are not limited to one possible element type. An array can deliberately allow several types using a union; mixed-type arrays will be covered in the next lesson.
