@@ -62,6 +62,7 @@ Source: [`features/arrays.ts`](features/arrays.ts)
 - Annotating empty arrays
 - Reading `string[]` and `Date[]`
 - Multidimensional arrays such as `string[][]`
+- Mixed-type arrays with unions such as `(Date | string)[]`
 
 ## Running the examples
 

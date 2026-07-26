@@ -602,4 +602,30 @@ carMakers.map((car: string): string => {
 
 Array methods such as `map`, `forEach`, and `filter` know the array's element type. That gives their callback parameters useful checking and autocomplete. In this example, TypeScript can already infer that `car` is a string from `carMakers`, though the course's explicit function-annotation style makes the contract visible.
 
-Typed arrays are not limited to one possible element type. An array can deliberately allow several types using a union; mixed-type arrays will be covered in the next lesson.
+### Arrays with multiple element types
+
+Typed arrays are not limited to one possible element type. A union can deliberately allow several:
+
+```ts
+const importantDates: (Date | string)[] = [
+  new Date(),
+  "2030-10-10",
+];
+```
+
+Read `(Date | string)[]` as “an array whose elements may be a `Date` or a `string`.” The parentheses group the union before `[]` makes it an array type.
+
+Both permitted types can be added:
+
+```ts
+importantDates.push("2030-10-10");
+importantDates.push(new Date());
+```
+
+Other types are still rejected:
+
+```ts
+importantDates.push(100); // Error: number is not Date or string
+```
+
+The array is flexible but remains type-safe because its allowed element types are explicitly limited.
