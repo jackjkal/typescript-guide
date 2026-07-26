@@ -690,3 +690,24 @@ const tea: Drink = ["brown", false, 0];
 ```
 
 `Drink` is now another way to refer to that tuple type. It does not create a runtime value or a new JavaScript data structure; it is reusable compile-time type information. Type aliases will be covered in more detail later.
+
+### When to use a tuple
+
+Tuples can be useful when working with inherently positional data, such as rows read from a CSV file. In ordinary application code, however, their meaning can be difficult to see:
+
+```ts
+const carSpecs: [number, number] = [400, 3354];
+```
+
+The type guarantees two numbers, but a developer cannot tell at a glance what `400` and `3354` represent. Understanding the record requires remembering or looking up the positional convention.
+
+An object makes the same data self-documenting:
+
+```ts
+const carStats = {
+  horsepower: 400,
+  weight: 3354,
+};
+```
+
+The property names communicate the meaning of each value wherever the record is used. The course's practical recommendation is therefore to prefer JavaScript objects when modeling records, even in TypeScript. Reserve tuples for cases where a compact positional format is genuinely useful or imposed by the data source.
