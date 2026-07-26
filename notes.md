@@ -634,4 +634,59 @@ The array is flexible but remains type-safe because its allowed element types ar
 
 Use an array to represent a collection of similar records where the order is not tied to a fixed meaning for each position. The collection may be sorted or rearranged, but an item remains the same kind of item regardless of its index.
 
-TypeScript also provides **tuples**, a similar-looking structure where each position has a particular meaning and type. The next lesson will introduce tuples and clarify when to choose a tuple instead of an array.
+<a id="tuples"></a>
+
+## `features/tuples.ts` — Tuples and type aliases
+
+A **tuple** is an array-like structure in which each position represents a particular property of a record. Its positions have a fixed order and may have different types.
+
+Tuple values look exactly like array literals at runtime. Without a tuple annotation, TypeScript infers an ordinary mixed-type array:
+
+```ts
+const pepsi = ["brown", true, 40];
+// inferred as (string | number | boolean)[], not as a tuple
+```
+
+That inferred array type permits any length and allows its three types in any position. The tuple behavior comes from the explicit tuple type.
+
+For a drink with a color, carbonation status, and sugar content:
+
+```ts
+const pepsi: [string, boolean, number] = ["brown", true, 40];
+```
+
+The tuple type fixes the meaning and type of each position:
+
+```text
+index 0 → color       → string
+index 1 → carbonated  → boolean
+index 2 → sugar       → number
+```
+
+Unlike a mixed-type array such as `(string | boolean | number)[]`, the tuple does not allow those types in arbitrary positions. A boolean must occupy the second position, for example.
+
+An object expresses the same record with visible property labels:
+
+```ts
+const pepsi = {
+  color: "brown",
+  carbonated: true,
+  sugar: 40,
+};
+```
+
+The object is more self-documenting because its property names travel with its values. A basic tuple instead preserves their meaning through a fixed positional convention. Tuples are useful when that compact, fixed-order representation is desired; objects are often clearer when descriptive field names matter.
+
+### Type aliases
+
+A **type alias** gives a reusable name to a type. Instead of repeating `[string, boolean, number]` for every drink, define it once:
+
+```ts
+type Drink = [string, boolean, number];
+
+const pepsi: Drink = ["brown", true, 40];
+const sprite: Drink = ["clear", true, 40];
+const tea: Drink = ["brown", false, 0];
+```
+
+`Drink` is now another way to refer to that tuple type. It does not create a runtime value or a new JavaScript data structure; it is reusable compile-time type information. Type aliases will be covered in more detail later.

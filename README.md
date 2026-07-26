@@ -64,6 +64,15 @@ Source: [`features/arrays.ts`](features/arrays.ts)
 - Multidimensional arrays such as `string[][]`
 - Mixed-type arrays with unions such as `(Date | string)[]`
 
+### 6. [Tuples and type aliases](notes.md#tuples)
+
+Source: [`features/tuples.ts`](features/tuples.ts)
+
+- Why tuple values are inferred as arrays without annotations
+- Fixed position and element types
+- Choosing between arrays, tuples, and objects
+- Reusing tuple definitions with type aliases
+
 ## Running the examples
 
 Run a TypeScript file directly:
