@@ -629,3 +629,9 @@ importantDates.push(100); // Error: number is not Date or string
 ```
 
 The array is flexible but remains type-safe because its allowed element types are explicitly limited.
+
+### When to use an array
+
+Use an array to represent a collection of similar records where the order is not tied to a fixed meaning for each position. The collection may be sorted or rearranged, but an item remains the same kind of item regardless of its index.
+
+TypeScript also provides **tuples**, a similar-looking structure where each position has a particular meaning and type. The next lesson will introduce tuples and clarify when to choose a tuple instead of an array.
