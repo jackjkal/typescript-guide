@@ -54,6 +54,15 @@ Source: [`features/annotations/objects.ts`](features/annotations/objects.ts)
 - Nested object destructuring
 - Mirroring an object's shape in its type annotation
 
+### 5. [Typed arrays](notes.md#typed-arrays)
+
+Source: [`features/arrays.ts`](features/arrays.ts)
+
+- Inferring array element types
+- Annotating empty arrays
+- Reading `string[]` and `Date[]`
+- Multidimensional arrays such as `string[][]`
+
 ## Running the examples
 
 Run a TypeScript file directly:

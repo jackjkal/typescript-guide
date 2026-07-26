@@ -529,3 +529,44 @@ The syntax is visually dense because two similar structures appear beside each o
 - `{ coords: { lat: number; lng: number } }` describes the TypeScript type.
 
 They resemble each other, but the first is executable JavaScript and the second is compile-time type information.
+
+<a id="typed-arrays"></a>
+
+## `features/arrays.ts` — Typed arrays
+
+A **typed array** is an array whose elements are expected to have a consistent type.
+
+When an array is initialized with elements, TypeScript can infer the element type:
+
+```ts
+const carMakers = ["ford", "toyota", "chevy"]; // string[]
+const dates = [new Date(), new Date()];         // Date[]
+```
+
+The `[]` in a type means “array of,” so:
+
+- `string[]` means an array of strings.
+- `Date[]` means an array of `Date` objects.
+
+An empty array provides no elements from which to infer the intended type. In that situation, use an explicit annotation:
+
+```ts
+const carMakers: string[] = [];
+```
+
+Without useful context, an empty array may receive an overly broad type such as `any[]` in the course configuration, losing protection against inserting the wrong kinds of values. Compiler settings and context can affect the precise inferred empty-array type, but the practical rule remains: annotate an empty array when its intended element type is known.
+
+### Multidimensional arrays
+
+Each additional pair of brackets represents another array level:
+
+```ts
+const carsByMake = [["f150"], ["corolla"], ["camaro"]];
+// inferred as string[][]
+```
+
+Read `string[][]` as “an array of arrays of strings”:
+
+```text
+string[][] → outer array → inner string[] arrays → string elements
+```
