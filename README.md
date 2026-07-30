@@ -73,6 +73,12 @@ Source: [`features/tuples.ts`](features/tuples.ts)
 - Choosing between arrays, tuples, and objects
 - Reusing tuple definitions with type aliases
 
+### 7. [Interfaces and classes](notes.md#interfaces-and-classes)
+
+- Defining named object types
+- Describing required property names and value types
+- Using interfaces and classes for code reuse
+
 ## Running the examples
 
 Run a TypeScript file directly:

@@ -711,3 +711,17 @@ const carStats = {
 ```
 
 The property names communicate the meaning of each value wherever the record is used. The course's practical recommendation is therefore to prefer JavaScript objects when modeling records, even in TypeScript. Reserve tuples for cases where a compact positional format is genuinely useful or imposed by the data source.
+
+<a id="interfaces-and-classes"></a>
+
+## Interfaces and classes
+
+An **interface** declares a named object type by describing:
+
+- The property names an object must provide
+- The type of value stored in each property
+- As later lessons will show, the methods the object can provide
+
+Interfaces let us define types for the structures used by our own application, much as built-in types such as `string` and `boolean` describe built-in values.
+
+The interplay between interfaces and classes will be a major source of code reuse in TypeScript. An interface can describe the capability or structure that code requires, while classes can provide concrete implementations matching that description. This lesson is only an introduction; later examples will develop that relationship.
