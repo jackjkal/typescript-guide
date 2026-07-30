@@ -725,3 +725,29 @@ An **interface** declares a named object type by describing:
 Interfaces let us define types for the structures used by our own application, much as built-in types such as `string` and `boolean` describe built-in values.
 
 The interplay between interfaces and classes will be a major source of code reuse in TypeScript. An interface can describe the capability or structure that code requires, while classes can provide concrete implementations matching that description. This lesson is only an introduction; later examples will develop that relationship.
+
+### The problem with repeated inline object types
+
+The first vehicle example uses an inline object annotation:
+
+```ts
+const oldCivic = {
+  name: "civic",
+  year: 2000,
+  broken: true,
+};
+
+const printVehicle = (vehicle: {
+  name: string;
+  year: number;
+  broken: boolean;
+}): void => {
+  console.log(`Name: ${vehicle.name}`);
+  console.log(`Year: ${vehicle.year}`);
+  console.log(`Broken? ${vehicle.broken}`);
+};
+```
+
+This works: the parameter annotation tells TypeScript exactly which properties `printVehicle` needs. The downside is that the type is long and embedded directly in the function signature.
+
+If several functions or variables need the same vehicle structure, repeating `{ name: string; year: number; broken: boolean }` creates duplication. An interface will let us give that object shape a meaningful, reusable name in the next lesson.

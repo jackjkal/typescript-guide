@@ -75,8 +75,11 @@ Source: [`features/tuples.ts`](features/tuples.ts)
 
 ### 7. [Interfaces and classes](notes.md#interfaces-and-classes)
 
+Source: [`features/interfaces.ts`](features/interfaces.ts)
+
 - Defining named object types
 - Describing required property names and value types
+- Replacing repeated inline object annotations
 - Using interfaces and classes for code reuse
 
 ## Running the examples
