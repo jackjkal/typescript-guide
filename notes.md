@@ -851,3 +851,47 @@ Once the interface describes only the ability to produce a summary, `Vehicle` is
 > **Aside: excess property checks**
 >
 > TypeScript generally allows an existing value to have more properties than an interface requires, as with `oldCivic` here. It may perform an additional “excess property” check when a fresh object literal is assigned or passed directly to a narrowly typed location. That special check catches likely typos, but it does not change the central structural-typing rule.
+
+### Reusing one function across different objects
+
+A drink has very different data from a vehicle, but it can provide the same `summary()` capability:
+
+```ts
+const drink = {
+  color: "brown",
+  carbonated: true,
+  sugar: 40,
+  summary(): string {
+    return `My drink has ${this.sugar} grams of sugar`;
+  },
+};
+```
+
+Both `oldCivic` and `drink` satisfy `Reportable`, so the same function accepts either one:
+
+```ts
+printSummary(oldCivic);
+printSummary(drink);
+```
+
+Their other properties do not need to match. `printSummary` depends only on the small common contract it actually uses:
+
+```ts
+interface Reportable {
+  summary(): string;
+}
+```
+
+This avoids writing separate `printVehicle()` and `printDrink()` functions that would perform the same operation. Interfaces encourage reusable, general-purpose functions by allowing them to depend on a capability instead of one specific kind of object.
+
+The broader pattern is:
+
+```text
+different object shapes
+        ↓
+shared interface capability
+        ↓
+one reusable function
+```
+
+Here, “general-purpose” should not be confused with TypeScript **generics**, which are a separate language feature.
