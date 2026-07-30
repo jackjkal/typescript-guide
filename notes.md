@@ -827,3 +827,27 @@ const oldCivic = {
 ```
 
 Because `oldCivic` has all the required properties with compatible types—including the `summary` method—it can be passed to a function expecting a `Vehicle`.
+
+### Structural typing and capability-based interfaces
+
+The interface was reduced to the only capability the printing function actually needs:
+
+```ts
+interface Reportable {
+  summary(): string;
+}
+
+const printSummary = (item: Reportable): void => {
+  console.log(item.summary());
+};
+```
+
+When `oldCivic` is passed to `printSummary`, TypeScript asks one essential question: **does this value contain a compatible `summary()` method?** The answer is yes, so the call is allowed.
+
+This is **structural typing**. A value satisfies an interface by having at least the required structure; it does not need to explicitly declare that it implements the interface. Additional properties such as `name`, `year`, and `broken` do not prevent `oldCivic` from being used as a `Reportable`.
+
+Once the interface describes only the ability to produce a summary, `Vehicle` is too specific a name. `Reportable` communicates the capability instead of tying the interface to one kind of object. Any otherwise unrelated object can be passed to `printSummary` if it supplies a compatible `summary()` method.
+
+> **Aside: excess property checks**
+>
+> TypeScript generally allows an existing value to have more properties than an interface requires, as with `oldCivic` here. It may perform an additional “excess property” check when a fresh object literal is assigned or passed directly to a narrowly typed location. That special check catches likely typos, but it does not change the central structural-typing rule.
