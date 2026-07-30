@@ -751,3 +751,41 @@ const printVehicle = (vehicle: {
 This works: the parameter annotation tells TypeScript exactly which properties `printVehicle` needs. The downside is that the type is long and embedded directly in the function signature.
 
 If several functions or variables need the same vehicle structure, repeating `{ name: string; year: number; broken: boolean }` creates duplication. An interface will let us give that object shape a meaningful, reusable name in the next lesson.
+
+### Defining and using an interface
+
+The repeated object shape can be extracted into an interface:
+
+```ts
+interface Vehicle {
+  name: string;
+  year: number;
+  broken: boolean;
+}
+```
+
+Interface names conventionally use **UpperCamelCase** (also called PascalCase), as in `Vehicle`.
+
+Defining `Vehicle` creates a reusable type name. It can be thought of loosely as a variable that refers to a type, with one important distinction: it belongs to TypeScript's type system and does not become a JavaScript value at runtime.
+
+The function annotation becomes much shorter:
+
+```ts
+const printVehicle = (vehicle: Vehicle): void => {
+  console.log(`Name: ${vehicle.name}`);
+  console.log(`Year: ${vehicle.year}`);
+  console.log(`Broken? ${vehicle.broken}`);
+};
+```
+
+Wherever `Vehicle` appears as a type, it stands for the full required structure:
+
+```ts
+{
+  name: string;
+  year: number;
+  broken: boolean;
+}
+```
+
+This removes duplication, gives the concept a meaningful name, and provides one place to update the shared contract.
