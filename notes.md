@@ -759,8 +759,9 @@ The repeated object shape can be extracted into an interface:
 ```ts
 interface Vehicle {
   name: string;
-  year: number;
+  year: Date;
   broken: boolean;
+  summary(): string;
 }
 ```
 
@@ -783,9 +784,46 @@ Wherever `Vehicle` appears as a type, it stands for the full required structure:
 ```ts
 {
   name: string;
-  year: number;
+  year: Date;
   broken: boolean;
+  summary(): string;
 }
 ```
 
 This removes duplication, gives the concept a meaningful name, and provides one place to update the shared contract.
+
+### Object properties and function signatures
+
+Interface properties are not limited to primitive types. They can refer to built-in objects, arrays, custom types, and other structures. Changing `year` from `number` to `Date` requires matching objects to provide a `Date`:
+
+```ts
+interface Vehicle {
+  name: string;
+  year: Date;
+  broken: boolean;
+  summary(): string;
+}
+```
+
+An interface can also describe a method with a function signature:
+
+```ts
+summary(): string;
+```
+
+This says that a matching object must have a method named `summary` which takes no arguments and returns a string. The interface describes the method's contract, not its implementation.
+
+The object supplies the implementation:
+
+```ts
+const oldCivic = {
+  name: "civic",
+  year: new Date(),
+  broken: true,
+  summary(): string {
+    return `Name: ${this.name}`;
+  },
+};
+```
+
+Because `oldCivic` has all the required properties with compatible types—including the `summary` method—it can be passed to a function expecting a `Vehicle`.
