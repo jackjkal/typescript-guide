@@ -895,3 +895,55 @@ one reusable function
 ```
 
 Here, “general-purpose” should not be confused with TypeScript **generics**, which are a separate language feature.
+
+### Interfaces as gatekeepers
+
+An interface can be thought of as a compile-time gatekeeper for a function:
+
+```ts
+const printSummary = (item: Reportable): void => {
+  console.log(item.summary());
+};
+```
+
+Before TypeScript permits a value through the `printSummary` gate, it checks that the value satisfies `Reportable`:
+
+```text
+oldCivic ─┐
+          ├─ has summary(): string ─→ Reportable gate ─→ printSummary
+drink ────┘
+```
+
+If a value lacks a compatible `summary()` method, TypeScript rejects the call. If it has that method, it passes the gate regardless of what other properties it contains.
+
+In this context, saying an object “implements `Reportable`” means that its structure satisfies the interface. The `oldCivic` and `drink` object literals do not need an explicit `implements` declaration.
+
+This gatekeeper pattern is a primary way interfaces promote reuse: write functions against small shared contracts, then allow many otherwise unrelated values to pass through by providing the required capabilities.
+
+### General strategy for reusable TypeScript code
+
+1. Define an interface describing only the properties or methods an operation requires.
+2. Type the function's parameter with that interface.
+3. Create objects or classes that satisfy the interface when they need to work with that function.
+
+In abstract form:
+
+```ts
+interface XYZ {
+  requiredCapability(): string;
+}
+
+const functionX = (value: XYZ): void => {
+  console.log(value.requiredCapability());
+};
+```
+
+Different values can now use the same function:
+
+```text
+object x ─┐
+          ├─ satisfies XYZ ─→ functionX()
+object y ─┘
+```
+
+The interface is the gatekeeper to the function. Objects satisfy it structurally by providing the required members; classes may additionally declare the relationship explicitly with `implements`. The reusable function remains concerned only with the shared contract, not with every detail of each concrete object or class.
