@@ -113,6 +113,8 @@ Source directory: [`maps`](maps)
 - Displaying entity locations on a map
 - Practicing class-and-interface code reuse
 - Running browser TypeScript with Parcel
+- Following the HTML-to-TypeScript dependency graph
+- Serving the generated browser bundle on localhost
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

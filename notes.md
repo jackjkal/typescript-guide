@@ -1196,3 +1196,47 @@ For this project, Parcel replaces the earlier direct Node execution workflow bec
 > **Compatibility watch**
 >
 > This starter comes from an older course and includes older dependencies, notably `faker` 4.1.0. Parcel is not currently listed in the starter's `package.json`, so running it through `npx` may fetch a much newer Parcel release than the course originally used. Treat differences in commands, module behavior, or library APIs as possible version mismatches rather than immediately assuming the lesson code is wrong.
+
+### First Parcel build
+
+The HTML file identifies both the browser entry page and the TypeScript entry module:
+
+```html
+<html>
+  <body>
+    <script type="module" src="./src/index.ts"></script>
+  </body>
+</html>
+```
+
+The source `index.html` points directly to `index.ts`. A browser does not compile that TypeScript itself. When Parcel is started with:
+
+```sh
+npx parcel index.html
+```
+
+Parcel:
+
+1. Treats `index.html` as the application entry point.
+2. Finds the referenced `./src/index.ts` dependency.
+3. Transforms the TypeScript into browser-executable JavaScript.
+4. Produces and serves an HTML/JavaScript build with the appropriate generated asset reference.
+5. Starts a development server, normally at `http://localhost:1234`.
+
+```text
+index.html ──references──> src/index.ts
+     │                          │
+     └────── Parcel build ──────┘
+                    ↓
+          browser-ready HTML + JavaScript
+                    ↓
+            http://localhost:1234
+```
+
+The first TypeScript entry point confirms that the generated bundle executes in the browser:
+
+```ts
+console.log("Hello, world!");
+```
+
+Parcel does not need to permanently rewrite the source `index.html`; it transforms and serves the build output while the development server is running.
