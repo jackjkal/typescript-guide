@@ -116,6 +116,7 @@ Source directory: [`maps`](maps)
 - Following the HTML-to-TypeScript dependency graph
 - Serving the generated browser bundle on localhost
 - Organizing primary classes into PascalCase files
+- Importing Faker and recognizing missing declaration files
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

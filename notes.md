@@ -1263,3 +1263,25 @@ For this course, class-focused filenames use **UpperCamelCase/PascalCase**, matc
 Separating classes into files keeps responsibilities focused and makes them independently importable and reusable. `index.ts` serves as the application's entry point and will eventually create and connect instances of those classes.
 
 The instructor is supplying the initial class breakdown for this project. In future applications, deciding which concepts deserve their own classes—and how those classes should collaborate—will be part of the design work.
+
+### Importing Faker and missing type declarations
+
+The `User` class will use the `faker` npm package to generate random fake data such as names and locations:
+
+```ts
+import faker from "faker";
+
+class User {
+  name: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+
+  constructor() {}
+}
+```
+
+TypeScript uses the same standard `import` syntax as modern JavaScript. The import identifies the runtime package, while TypeScript additionally looks for type declarations describing that package's API.
+
+The errors in this version are intentional. In particular, TypeScript reports that it cannot find a declaration file for the `faker` module. The installed `faker` 4.1.0 package contains JavaScript but does not provide TypeScript declarations, so TypeScript can locate code to run without yet having type information with which to analyze that code. The next lesson will address that missing type information.
