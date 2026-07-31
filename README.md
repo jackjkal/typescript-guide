@@ -96,6 +96,8 @@ Source: [`features/classes.ts`](features/classes.ts)
 - Inherited and overridden methods
 - `public`, `private`, and `protected` visibility
 - TypeScript soft privacy versus JavaScript `#` private elements
+- Class fields and constructor initialization
+- Constructor parameter-property shortcuts
 
 ## Running the examples
 

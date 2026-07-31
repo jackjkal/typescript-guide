@@ -1061,3 +1061,50 @@ TypeScript's `private` and `protected` modifiers primarily communicate and enfor
 > JavaScript classes have evolved since the course was recorded. JavaScript now supports public class fields and runtime-enforced private elements written with `#`, such as `#drive()`. JavaScript still does not have TypeScript's `protected` modifier.
 >
 > TypeScript `private drive()` is generally **soft private**: TypeScript rejects improper access during type checking, but the emitted JavaScript member is not necessarily hidden at runtime. JavaScript `#drive()` is **hard private** and JavaScript itself prevents outside access. Choose `#` when runtime privacy is required; use TypeScript modifiers when compile-time API design is the goal.
+
+### Class fields and constructors
+
+A class field is a property stored on each instance. One way to initialize a field is directly in its declaration:
+
+```ts
+class Vehicle {
+  color: string = "red";
+}
+```
+
+When the value must be supplied while creating the instance, the special `constructor` method can initialize it instead:
+
+```ts
+class Vehicle {
+  color: string;
+
+  constructor(color: string) {
+    this.color = color;
+  }
+}
+
+const vehicle = new Vehicle("orange");
+```
+
+TypeScript provides a **parameter property** shortcut for that declaration-and-assignment pattern:
+
+```ts
+class Vehicle {
+  constructor(public color: string) {}
+}
+```
+
+Writing a visibility modifier on the constructor parameter makes TypeScript do three jobs:
+
+1. Accept `color` as a constructor argument.
+2. Declare `color` as an instance field.
+3. Assign the argument to `this.color` automatically.
+
+The result can be accessed on the instance because it is public:
+
+```ts
+const vehicle = new Vehicle("orange");
+console.log(vehicle.color);
+```
+
+Visibility modifiers apply to fields as well as methods. Constructor parameter properties can therefore use `public`, `private`, or `protected`. Without one of these modifiers, `color: string` would be only an ordinary constructor parameter and would not automatically create `this.color`.
