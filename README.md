@@ -98,6 +98,12 @@ Source: [`features/classes.ts`](features/classes.ts)
 - TypeScript soft privacy versus JavaScript `#` private elements
 - Class fields and constructor initialization
 - Constructor parameter-property shortcuts
+- Derived constructors and `super()`
+- Combining classes and interfaces for code reuse
+
+## Next: Design patterns with TypeScript
+
+The syntax overview is complete. Upcoming project-based lessons apply these features to design patterns; notes will call out compatibility differences caused by newer runtimes, compilers, and dependencies.
 
 ## Running the examples
 

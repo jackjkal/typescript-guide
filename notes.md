@@ -1140,3 +1140,25 @@ The parameters have intentionally different forms:
 - `color: string` is only a constructor parameter. It is forwarded to `super(color)` so `Vehicle` can initialize the `color` field that it owns.
 
 Adding `public` to `color` in the child constructor would declare another parameter property on `Car`, unnecessarily duplicating the inherited field. Let the class responsible for declaring a field initialize it through its own constructor.
+
+### Why classes matter
+
+Classes and interfaces work together as a code-reuse strategy:
+
+- An **interface** defines a shared contract or required capability.
+- A **class** packages fields and method implementations into a reusable blueprint.
+- Different classes can satisfy the same interface and therefore work with the same functions or other components.
+
+```text
+interface defines the contract
+              ↓
+classes provide implementations
+              ↓
+shared code works with the interface
+```
+
+The course will use classes heavily and connect them through interfaces. This encourages code to depend on small contracts instead of the internal details of particular implementations. Not every modern TypeScript application is class-heavy, but this class-and-interface style is central to the design patterns taught in the upcoming projects.
+
+### End of the syntax overview
+
+This concludes the introductory survey of TypeScript syntax. The next section applies these features through project-based design patterns. Because the course and its project dependencies are several years old, commands, library APIs, configuration defaults, and runtime behavior may differ from the recorded lessons; verify those details against the installed versions when problems arise.
