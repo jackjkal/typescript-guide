@@ -117,6 +117,7 @@ Source directory: [`maps`](maps)
 - Serving the generated browser bundle on localhost
 - Organizing primary classes into PascalCase files
 - Importing Faker and recognizing missing declaration files
+- Using `.d.ts` files and DefinitelyTyped with JavaScript libraries
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

@@ -1285,3 +1285,29 @@ class User {
 TypeScript uses the same standard `import` syntax as modern JavaScript. The import identifies the runtime package, while TypeScript additionally looks for type declarations describing that package's API.
 
 The errors in this version are intentional. In particular, TypeScript reports that it cannot find a declaration file for the `faker` module. The installed `faker` 4.1.0 package contains JavaScript but does not provide TypeScript declarations, so TypeScript can locate code to run without yet having type information with which to analyze that code. The next lesson will address that missing type information.
+
+### Type declaration files for JavaScript libraries
+
+TypeScript can use ordinary JavaScript from npm packages, local files, and other sources. The JavaScript contains the runtime implementation, but it may not contain enough information for TypeScript to check how the code is being used.
+
+A **type declaration file**, normally ending in `.d.ts`, describes a JavaScript API to TypeScript. It can declare:
+
+- The functions and classes a library exports
+- The parameters accepted by its functions
+- The return types of those functions
+- The shapes of its objects and other public types
+
+The declaration acts as an adapter between TypeScript application code and JavaScript library code:
+
+```text
+TypeScript application
+        ↓ checked using
+declaration file (.d.ts)
+        ↓ describes
+JavaScript library (.js)
+        ↓ executes at runtime
+```
+
+The declaration file does not replace the JavaScript library and normally contains no runtime implementation. It gives the compiler and editor a typed description of code that still executes as JavaScript.
+
+Libraries may bundle their own declarations, as Axios does, or require a separate community-maintained type package. The course's installed `faker` 4.1.0 package does not bundle declarations, so the upcoming solution uses `@types/faker` from **DefinitelyTyped**, the repository behind the `@types/*` package namespace.
