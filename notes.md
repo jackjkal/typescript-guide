@@ -971,3 +971,46 @@ vehicle.drive();
 ```
 
 `Vehicle` is the class—the blueprint—while `vehicle` is a concrete object created from it. The instance has access to the `drive()` method defined by its class.
+
+### Inheritance
+
+TypeScript classes build on JavaScript's class and inheritance syntax while adding type checking and additional class features.
+
+The `extends` keyword creates an inheritance relationship:
+
+```ts
+class Vehicle {
+  drive(): void {
+    console.log("chugga chugga");
+  }
+
+  honk(): void {
+    console.log("beep");
+  }
+}
+
+class Car extends Vehicle {
+  drive(): void {
+    console.log("vroom");
+  }
+}
+```
+
+- `Vehicle` is the **parent class**, **base class**, or **superclass**.
+- `Car` is the **child class**, **derived class**, or **subclass**.
+- A `Car` instance inherits the accessible members of `Vehicle`.
+
+The child may use an inherited method without redefining it:
+
+```ts
+const car = new Car();
+car.honk(); // inherited from Vehicle
+```
+
+It may also **override** an inherited method by defining its own compatible version:
+
+```ts
+car.drive(); // uses Car.drive() and prints "vroom"
+```
+
+Inheritance models an “is a” relationship: a `Car` is a specialized kind of `Vehicle`. Anything promised by the parent class is available on the child unless the child provides an override.

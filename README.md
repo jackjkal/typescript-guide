@@ -91,6 +91,9 @@ Source: [`features/classes.ts`](features/classes.ts)
 - Classes as object blueprints
 - Fields and methods
 - Creating instances with `new`
+- Inheritance with `extends`
+- Parent and child classes
+- Inherited and overridden methods
 
 ## Running the examples
 
