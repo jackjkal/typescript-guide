@@ -105,6 +105,16 @@ Source: [`features/classes.ts`](features/classes.ts)
 
 The syntax overview is complete. Upcoming project-based lessons apply these features to design patterns; notes will call out compatibility differences caused by newer runtimes, compilers, and dependencies.
 
+### 9. [Maps application](notes.md#maps-project)
+
+Source directory: [`maps`](maps)
+
+- Randomly generating user and company entities
+- Displaying entity locations on a map
+- Practicing class-and-interface code reuse
+- Running browser TypeScript with Parcel
+- Watching for older starter dependency incompatibilities
+
 ## Running the examples
 
 Run a TypeScript file directly:

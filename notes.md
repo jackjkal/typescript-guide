@@ -1162,3 +1162,37 @@ The course will use classes heavily and connect them through interfaces. This en
 ### End of the syntax overview
 
 This concludes the introductory survey of TypeScript syntax. The next section applies these features through project-based design patterns. Because the course and its project dependencies are several years old, commands, library APIs, configuration defaults, and runtime behavior may differ from the recorded lessons; verify those details against the installed versions when problems arise.
+
+<a id="maps-project"></a>
+
+## `maps` — Maps application
+
+The first project in the design-patterns portion of the course will:
+
+1. Randomly generate a `User` and a `Company`.
+2. Give each entity a location.
+3. Display both entities as markers on a map in the browser.
+
+The main learning goal is to practice using classes and interfaces together for code reuse. The user, company, and map-related pieces will have different responsibilities, while interfaces will provide the contracts that allow them to work together.
+
+### Project setup
+
+The supplied starter project lives in `maps` and contains its dependency manifest and lockfile. From the repository root, the setup commands are:
+
+```sh
+cd maps
+npm install
+npx parcel index.html
+```
+
+Run `npm install` before starting Parcel. The `npx` prefix executes the project's Parcel command without requiring a global installation.
+
+### Parcel's role
+
+Parcel is a web bundler and development tool. Starting it with the HTML entry point allows it to follow the page's referenced files, process TypeScript for the browser, bundle the application's dependencies, serve the result locally, and update the browser during development.
+
+For this project, Parcel replaces the earlier direct Node execution workflow because the application must run in a browser and load browser-oriented dependencies. It temporarily hides much of the manual build configuration so the lessons can focus on TypeScript design. A later section will set up a TypeScript project more explicitly.
+
+> **Compatibility watch**
+>
+> This starter comes from an older course and includes older dependencies, notably `faker` 4.1.0. Parcel is not currently listed in the starter's `package.json`, so running it through `npx` may fetch a much newer Parcel release than the course originally used. Treat differences in commands, module behavior, or library APIs as possible version mismatches rather than immediately assuming the lesson code is wrong.
