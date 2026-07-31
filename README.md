@@ -94,6 +94,8 @@ Source: [`features/classes.ts`](features/classes.ts)
 - Inheritance with `extends`
 - Parent and child classes
 - Inherited and overridden methods
+- `public`, `private`, and `protected` visibility
+- TypeScript soft privacy versus JavaScript `#` private elements
 
 ## Running the examples
 

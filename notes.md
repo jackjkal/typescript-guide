@@ -1014,3 +1014,50 @@ car.drive(); // uses Car.drive() and prints "vroom"
 ```
 
 Inheritance models an “is a” relationship: a `Car` is a specialized kind of `Vehicle`. Anything promised by the parent class is available on the child unless the child provides an override.
+
+### Member visibility modifiers
+
+Visibility modifiers are keywords placed on class fields or methods to restrict where they may be accessed:
+
+- `public`: accessible anywhere. This is the default, so writing `public` is optional.
+- `private`: accessible only within the class that declares the member—not from subclasses or outside code.
+- `protected`: accessible within the declaring class and its subclasses, but not from outside code.
+
+The lesson's example uses all three visibility levels:
+
+```ts
+class Vehicle {
+  protected honk(): void {
+    console.log("beep");
+  }
+}
+
+class Car extends Vehicle {
+  private drive(): void {
+    console.log("vroom");
+  }
+
+  startDrivingProcess(): void {
+    this.drive(); // Allowed: inside Car
+    this.honk();  // Allowed: inherited protected method
+  }
+}
+
+const car = new Car();
+car.startDrivingProcess(); // Allowed: public by default
+car.honk();                 // Error: honk is protected
+```
+
+The intentionally invalid calls demonstrate TypeScript's checks:
+
+- `vehicle.honk()` and `car.honk()` are errors because outside code cannot call a protected method.
+- `car.drive()` would be an error because outside code cannot call a private method.
+- `startDrivingProcess()` can call both methods from an allowed location and provide a public entry point.
+
+TypeScript's `private` and `protected` modifiers primarily communicate and enforce intended usage during type checking. They help prevent other developers from depending on internal implementation details, but should not be treated as an application security boundary.
+
+> **Modern JavaScript clarification**
+>
+> JavaScript classes have evolved since the course was recorded. JavaScript now supports public class fields and runtime-enforced private elements written with `#`, such as `#drive()`. JavaScript still does not have TypeScript's `protected` modifier.
+>
+> TypeScript `private drive()` is generally **soft private**: TypeScript rejects improper access during type checking, but the emitted JavaScript member is not necessarily hidden at runtime. JavaScript `#drive()` is **hard private** and JavaScript itself prevents outside access. Choose `#` when runtime privacy is required; use TypeScript modifiers when compile-time API design is the goal.
