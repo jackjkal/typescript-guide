@@ -1108,3 +1108,35 @@ console.log(vehicle.color);
 ```
 
 Visibility modifiers apply to fields as well as methods. Constructor parameter properties can therefore use `public`, `private`, or `protected`. Without one of these modifiers, `color: string` would be only an ordinary constructor parameter and would not automatically create `this.color`.
+
+### Constructors in derived classes
+
+If a child class does not define a constructor, constructing the child automatically forwards the arguments to the parent constructor. Because `Vehicle` requires a color, `Car` does too:
+
+```ts
+class Car extends Vehicle {}
+
+const car = new Car("red");
+```
+
+If a derived class defines its own constructor, it must call `super()` before using `this`. `super()` invokes the parent class's constructor:
+
+```ts
+class Car extends Vehicle {
+  constructor(
+    public wheels: number,
+    color: string,
+  ) {
+    super(color);
+  }
+}
+
+const car = new Car(4, "red");
+```
+
+The parameters have intentionally different forms:
+
+- `public wheels: number` creates and initializes a new `wheels` field belonging to `Car`.
+- `color: string` is only a constructor parameter. It is forwarded to `super(color)` so `Vehicle` can initialize the `color` field that it owns.
+
+Adding `public` to `color` in the child constructor would declare another parameter property on `Car`, unnecessarily duplicating the inherited field. Let the class responsible for declaring a field initialize it through its own constructor.
