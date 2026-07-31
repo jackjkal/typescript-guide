@@ -1311,3 +1311,49 @@ JavaScript library (.js)
 The declaration file does not replace the JavaScript library and normally contains no runtime implementation. It gives the compiler and editor a typed description of code that still executes as JavaScript.
 
 Libraries may bundle their own declarations, as Axios does, or require a separate community-maintained type package. The course's installed `faker` 4.1.0 package does not bundle declarations, so the upcoming solution uses `@types/faker` from **DefinitelyTyped**, the repository behind the `@types/*` package namespace.
+
+### Reading Faker's declarations
+
+Installing the compatible declaration package resolves the missing-types warning:
+
+```sh
+npm install @types/faker@5.5.9
+```
+
+Following the `faker` import with the editor's “Go to Definition” command opens its `index.d.ts`. The `.d.ts` suffix identifies a declaration file. It contains API descriptions rather than implementations, for example:
+
+```ts
+latitude(max?: number, min?: number, precision?: number): string;
+longitude(max?: number, min?: number, precision?: number): string;
+```
+
+Declaration files can serve as useful API documentation: they reveal available functions, parameter types, return types, and object structures. They are especially useful alongside the library's official documentation, though declarations can occasionally be incomplete or out of sync with the runtime package.
+
+The Faker declarations reveal that latitude and longitude are returned as strings, while this application wants numeric coordinates.
+
+### Initializing the `User` fields
+
+A field annotation describes a property's type but does not construct its runtime value:
+
+```ts
+location: {
+  lat: number;
+  lng: number;
+};
+```
+
+Creating `new User()` does not automatically turn `location` into an object. Until the class assigns a meaningful value, reading an uninitialized field produces `undefined`; TypeScript's type syntax alone does not manufacture runtime data.
+
+The constructor is responsible for initializing both fields:
+
+```ts
+constructor() {
+  this.name = faker.name.firstName();
+  this.location = {
+    lat: parseFloat(faker.address.latitude()),
+    lng: parseFloat(faker.address.longitude()),
+  };
+}
+```
+
+`parseFloat()` explicitly converts Faker's coordinate strings into the `number` values required by the `location` type. If a string cannot be parsed as a number, `parseFloat()` produces `NaN`, so external or untrusted strings may require additional runtime validation; Faker's coordinate methods are expected to produce numeric strings here.

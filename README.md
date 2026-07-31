@@ -118,6 +118,8 @@ Source directory: [`maps`](maps)
 - Organizing primary classes into PascalCase files
 - Importing Faker and recognizing missing declaration files
 - Using `.d.ts` files and DefinitelyTyped with JavaScript libraries
+- Reading declaration files as API documentation
+- Initializing typed class fields with Faker data
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples
