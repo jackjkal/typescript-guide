@@ -947,3 +947,27 @@ object y ─┘
 ```
 
 The interface is the gatekeeper to the function. Objects satisfy it structurally by providing the required members; classes may additionally declare the relationship explicitly with `implements`. The reusable function remains concerned only with the shared contract, not with every detail of each concrete object or class.
+
+<a id="classes"></a>
+
+## `features/classes.ts` — Classes
+
+A **class** is a blueprint for creating objects that represent a particular kind of thing. It can describe:
+
+- **Fields:** values stored by each object
+- **Methods:** functions that each object can perform
+
+Calling a class with `new` creates an **instance** of that class:
+
+```ts
+class Vehicle {
+  drive(): void {
+    console.log("chugga chugga");
+  }
+}
+
+const vehicle = new Vehicle();
+vehicle.drive();
+```
+
+`Vehicle` is the class—the blueprint—while `vehicle` is a concrete object created from it. The instance has access to the `drive()` method defined by its class.

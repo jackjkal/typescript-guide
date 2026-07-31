@@ -84,6 +84,14 @@ Source: [`features/interfaces.ts`](features/interfaces.ts)
 - Naming interfaces after capabilities such as `Reportable`
 - Using interfaces and classes for code reuse
 
+### 8. [Classes](notes.md#classes)
+
+Source: [`features/classes.ts`](features/classes.ts)
+
+- Classes as object blueprints
+- Fields and methods
+- Creating instances with `new`
+
 ## Running the examples
 
 Run a TypeScript file directly:
