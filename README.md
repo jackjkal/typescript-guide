@@ -115,6 +115,7 @@ Source directory: [`maps`](maps)
 - Running browser TypeScript with Parcel
 - Following the HTML-to-TypeScript dependency graph
 - Serving the generated browser bundle on localhost
+- Organizing primary classes into PascalCase files
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

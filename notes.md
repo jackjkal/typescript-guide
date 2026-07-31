@@ -1240,3 +1240,26 @@ console.log("Hello, world!");
 ```
 
 Parcel does not need to permanently rewrite the source `index.html`; it transforms and serves the build output while the development server is running.
+
+### Project structure: one primary class per file
+
+The application will be split into a collection of focused source files. Each class will normally live in a file whose primary responsibility is to define and export that class:
+
+```text
+maps/
+└── src/
+    ├── index.ts
+    └── User.ts
+```
+
+The first class file begins with:
+
+```ts
+class User {}
+```
+
+For this course, class-focused filenames use **UpperCamelCase/PascalCase**, matching the class name: `User` lives in `User.ts`. This makes the file's main export and purpose easy to identify. It is a project convention rather than a TypeScript language requirement; other codebases may use lowercase or kebab-case filenames.
+
+Separating classes into files keeps responsibilities focused and makes them independently importable and reusable. `index.ts` serves as the application's entry point and will eventually create and connect instances of those classes.
+
+The instructor is supplying the initial class breakdown for this project. In future applications, deciding which concepts deserve their own classes—and how those classes should collaborate—will be part of the design work.
