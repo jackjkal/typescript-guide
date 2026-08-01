@@ -1357,3 +1357,50 @@ constructor() {
 ```
 
 `parseFloat()` explicitly converts Faker's coordinate strings into the `number` values required by the `location` type. If a string cannot be parsed as a number, `parseFloat()` produces `NaN`, so external or untrusted strings may require additional runtime validation; Faker's coordinate methods are expected to produce numeric strings here.
+
+### Exporting classes and using them from the entry point
+
+A class-focused module normally defines and exports its class without also creating application instances:
+
+```ts
+// User.ts
+export class User {
+  // ...
+}
+```
+
+A central entry point imports the building blocks and connects or uses them:
+
+```ts
+// index.ts
+import { User } from "./User";
+
+const user = new User();
+console.log(user);
+```
+
+This separates definition from application setup: `User.ts` owns what a user is and how one is initialized, while `index.ts` decides when to create one. Parcel follows the import from the entry point and includes `User.ts` in the browser bundle. The generated user's data can then be inspected in the browser console.
+
+### Named exports versus default exports
+
+`User` is a **named export**, so its import uses curly braces:
+
+```ts
+export class User {}
+import { User } from "./User";
+```
+
+A default export is imported without curly braces:
+
+```ts
+export default class User {}
+import User from "./User";
+```
+
+The course adopts a convention of preferring named exports for our own TypeScript modules. Using one consistent style avoids having to remember which local imports require braces and keeps the imported name connected to the exported name.
+
+This is not a TypeScript requirement or a universal TypeScript-community rule. Default exports are valid, and many projects use them. For third-party packages, use the import style supported by that package's exports and type declarations; the existing Faker import is a default import:
+
+```ts
+import faker from "faker";
+```
