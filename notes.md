@@ -1404,3 +1404,45 @@ This is not a TypeScript requirement or a universal TypeScript-community rule. D
 ```ts
 import faker from "faker";
 ```
+
+### Modeling a company
+
+The second map entity follows the same class-per-file pattern as `User`:
+
+```ts
+// Company.ts
+import faker from "faker";
+
+export class Company {
+  companyName: string;
+  catchPhrase: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+
+  constructor() {
+    this.companyName = faker.company.companyName();
+    this.catchPhrase = faker.company.catchPhrase();
+    this.location = {
+      lat: parseFloat(faker.address.latitude()),
+      lng: parseFloat(faker.address.longitude()),
+    };
+  }
+}
+```
+
+`Company` and `User` contain different identifying data, but both initialize the same numeric `location` shape. The application entry point imports and creates one of each:
+
+```ts
+import { User } from "./User";
+import { Company } from "./Company";
+
+const user = new User();
+const company = new Company();
+
+console.log(user);
+console.log(company);
+```
+
+The browser console now confirms that both independently generated entities are included in the Parcel bundle and created successfully.

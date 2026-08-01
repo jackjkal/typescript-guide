@@ -120,6 +120,7 @@ Source directory: [`maps`](maps)
 - Using `.d.ts` files and DefinitelyTyped with JavaScript libraries
 - Reading declaration files as API documentation
 - Initializing typed class fields with Faker data
+- Modeling and generating `User` and `Company` instances
 - Exporting class modules and composing them in `index.ts`
 - Named exports versus default exports
 - Watching for older starter dependency incompatibilities
