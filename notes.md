@@ -1446,3 +1446,32 @@ console.log(company);
 ```
 
 The browser console now confirms that both independently generated entities are included in the Parcel bundle and created successfully.
+
+### Loading the Google Maps JavaScript API
+
+The page loads the Google Maps JavaScript API before loading the TypeScript application entry point:
+
+```html
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=<API_KEY>&callback=Function.prototype"
+></script>
+<script type="module" src="./src/index.ts"></script>
+```
+
+The first script is hosted by Google and makes the Maps JavaScript API available in the browser. The second script enters the local Parcel application. Keeping the Google script first ensures its global API is available before the application attempts to use it.
+
+The API key selects and authorizes a Google Cloud project; it is not a TypeScript feature. Browser Maps keys are necessarily sent to clients, so their protection relies on restricting them to the required Google API and permitted website referrers. Do not commit an unrestricted personal key to a public repository.
+
+The course supplies a shared pre-generated key for the exercise, but an older shared key may have expired, been revoked, exceeded its quota, or been restricted. If the map fails, inspect the browser console for a Google Maps authentication or billing error before debugging the TypeScript code.
+
+### Adding types for the global `google.maps` API
+
+Loading the Google Maps script creates a runtime global named `google`, but that script does not automatically tell TypeScript about the global's structure. The installed `@types/google.maps` package supplies the declarations, and the lesson explicitly includes them at the top of the entry file:
+
+```ts
+/// <reference types="@types/google.maps" />
+```
+
+A triple-slash `types` directive is a compiler instruction that declares a dependency on a type declaration package. It is conceptually similar to importing type information, but it emits no JavaScript and does not load the Google Maps runtime script. The HTML `<script>` element remains responsible for the runtime API; the directive is only for compile-time checking and editor assistance.
+
+Triple-slash directives must appear at the top of the file before executable statements. With the declarations included, TypeScript can recognize names under `google.maps` and provide checking and autocomplete for the Maps API.
