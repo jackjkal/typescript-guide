@@ -1873,3 +1873,9 @@ Now TypeScript checks `User` against `Mappable` at the class declaration. If `co
 The `implements` clause is optional: it is not needed for instances to pass TypeScript's structural compatibility check. Its benefits are earlier, better-located feedback and clear documentation to other engineers that the class is deliberately designed to satisfy that contract.
 
 `implements` is also a compile-time check only. It does not add missing members, alter the class at runtime, or change the generated JavaScript; the class must still define the required properties and methods itself.
+
+### Maps project wrap-up
+
+A recurring organization pattern in the course is to place the interface that describes how other code can collaborate with a class near the top of that class's module, followed by the class itself. `CustomMap.ts` demonstrates it with the exported `Mappable` contract followed by `CustomMap`.
+
+Keeping the contract beside its consumer makes their relationship easy to discover: `CustomMap` owns the requirements for values passed to `addMarker()`, while `User`, `Company`, and future entity classes decide whether to implement those requirements. This concludes the first design-pattern application.

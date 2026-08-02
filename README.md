@@ -139,6 +139,7 @@ Source directory: [`maps`](maps)
 - Entity-owned popup content through the `Mappable` contract
 - What a `string` return type does—and does not—validate
 - Explicit `implements` clauses for better-located errors and clearer intent
+- Co-locating a class-owned collaboration interface with its consumer
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 
