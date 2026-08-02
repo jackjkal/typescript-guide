@@ -1720,3 +1720,45 @@ User | Company | CarLot | Park
 ```
 
 Every new mappable entity would require editing `CustomMap`, even though the method cares only about the shared `location` structure. The next refactor will remove that unnecessary knowledge of concrete classes.
+
+### Best refactor: depend on a `Mappable` interface
+
+The union still makes `CustomMap` depend on every concrete class it supports. The better design inverts that relationship: the map defines the minimum requirements for working with it, and each entity must satisfy those requirements.
+
+```ts
+interface Mappable {
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
+
+addMarker(mappable: Mappable): void {
+  new google.maps.Marker({
+    map: this.googleMap,
+    position: {
+      lat: mappable.location.lat,
+      lng: mappable.location.lng,
+    },
+  });
+}
+```
+
+`Mappable` is the gatekeeper for `addMarker()`. The method no longer cares whether its argument is a `User`, `Company`, `Park`, or any other particular class. It asks only one question: does this value have a `location` with numeric `lat` and `lng` properties?
+
+```text
+Before: CustomMap -> User | Company | Park | ...
+
+After:  User -------\
+        Company -----+-> satisfies Mappable -> addMarker()
+        Park --------/
+```
+
+This has two important consequences:
+
+- `CustomMap` no longer needs to import or know about every entity class.
+- A new class can work with `addMarker()` without requiring another change to `CustomMap`; it only needs the required shape.
+
+Because TypeScript uses structural typing, `User` and `Company` do not need to explicitly declare `implements Mappable` in this example. Their existing `location` fields already satisfy the interface. An explicit `implements` clause can still be useful when a class author wants TypeScript to check that promise at the class declaration.
+
+A value's types are not exclusive labels. The same object can satisfy `Mappable`, another interface such as `Reportable`, and its own class instance type simultaneously—as long as it has the structure each type requires.

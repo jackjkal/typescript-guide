@@ -131,6 +131,8 @@ Source directory: [`maps`](maps)
 - Refactoring duplicated user/company marker methods
 - Union parameters and access to shared properties
 - The scaling problem with concrete-type unions
+- Inverting concrete dependencies with a `Mappable` interface
+- Structural gatekeeping and values satisfying multiple interfaces
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 
