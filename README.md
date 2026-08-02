@@ -127,6 +127,9 @@ Source directory: [`maps`](maps)
 - DOM nullability and `as HTMLElement` assertions
 - Encapsulating the Google map behind an application-owned wrapper
 - A private `googleMap` field and configurable container ID
+- Classes as both runtime values and instance types
+- Refactoring duplicated user/company marker methods
+- Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

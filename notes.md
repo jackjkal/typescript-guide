@@ -1590,3 +1590,66 @@ const customMap = new CustomMap("map");
 ```
 
 The entry point now depends on `CustomMap` instead of constructing a Google map directly. This significantly reduces the API surface visible to the rest of the application and makes the intended operations clearer to other engineers.
+
+### Preparing to add markers: classes as values and types
+
+`CustomMap` imports both entity classes as it begins adding marker operations:
+
+```ts
+import { Company } from "./Company";
+import { User } from "./User";
+```
+
+A TypeScript class has a dual nature:
+
+- As a **runtime value**, it is a constructor that can create instances: `new User()`.
+- As a **type**, its name describes instances of that class: `user: User`.
+
+This is why the same imported class name can be used both in executable code and in a type annotation. TypeScript has other declarations that occupy the value space, type space, or both; later lessons will explore that distinction further.
+
+The intentionally poor first design creates separate marker methods for users and companies:
+
+```ts
+addUserMarker() {}
+addCompanyMarker() {}
+```
+
+Both operations are expected to perform almost the same work, so their separate methods will create duplication. The implementation is being written this way first so the later interface-based refactor has a concrete design problem to solve.
+
+> **Compatibility watch: legacy markers**
+>
+> The course uses `new google.maps.Marker(...)`. Google deprecated that class in February 2024 in favor of `google.maps.marker.AdvancedMarkerElement`. The legacy class still works and Google has not scheduled its removal, so it can be used temporarily to follow the course's TypeScript refactor.
+>
+> A modern migration adds unrelated setup: the marker library must be loaded and the map must have a map ID. To keep the design-pattern lesson focused, it is reasonable to finish the interface refactor with the legacy API and modernize the marker implementation separately afterward.
+
+### Adding the first legacy marker
+
+The first intentionally specific method accepts a `User` instance:
+
+```ts
+addUserMarker(user: User): void {
+  new google.maps.Marker({
+    map: this.googleMap,
+    position: {
+      lat: user.location.lat,
+      lng: user.location.lng,
+    },
+  });
+}
+```
+
+The legacy marker constructor receives an options object containing:
+
+- `map`: the private Google map on which the marker should appear.
+- `position`: the latitude and longitude taken from the supplied user.
+
+The entry point creates the collaborating objects and passes the user to the wrapper:
+
+```ts
+const user = new User();
+const customMap = new CustomMap("map");
+
+customMap.addUserMarker(user);
+```
+
+The marker now appears at the randomly generated user's location in the browser. The empty `addCompanyMarker()` method remains as the duplicated implementation path that the upcoming refactor will address.
