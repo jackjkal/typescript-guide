@@ -1762,3 +1762,18 @@ This has two important consequences:
 Because TypeScript uses structural typing, `User` and `Company` do not need to explicitly declare `implements Mappable` in this example. Their existing `location` fields already satisfy the interface. An explicit `implements` clause can still be useful when a class author wants TypeScript to check that promise at the class declaration.
 
 A value's types are not exclusive labels. The same object can satisfy `Mappable`, another interface such as `Reportable`, and its own class instance type simultaneously—as long as it has the structure each type requires.
+
+### Cleanup and implicit interface checks
+
+With `addMarker()` depending only on `Mappable`, `CustomMap.ts` no longer imports or refers to `User` or `Company`. The entry point can use the same general-purpose method for both:
+
+```ts
+customMap.addMarker(user);
+customMap.addMarker(company);
+```
+
+There is no need to annotate `user` as `Mappable` or make `User` explicitly implement the interface. At each call, TypeScript performs an **implicit structural check**: it compares the argument's shape with the parameter type and confirms that the required `location.lat` and `location.lng` properties exist with the correct types.
+
+This leaves `CustomMap` as a standalone wrapper whose public API is independent of this application's entity classes. The design is therefore easy to reuse: future projects can supply entirely different objects as long as they satisfy `Mappable`.
+
+> **Modern compatibility note:** The wrapper design remains reusable, but its current marker implementation uses the deprecated `google.maps.Marker`. Reusing the file in a new application would require modernizing that internal implementation to `AdvancedMarkerElement` and completing its associated setup. The important reusable idea is the stable, application-owned interface around the third-party API.

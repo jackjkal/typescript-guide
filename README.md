@@ -133,6 +133,8 @@ Source directory: [`maps`](maps)
 - The scaling problem with concrete-type unions
 - Inverting concrete dependencies with a `Mappable` interface
 - Structural gatekeeping and values satisfying multiple interfaces
+- Implicit interface checks at function calls
+- A reusable map wrapper independent of application entities
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 
