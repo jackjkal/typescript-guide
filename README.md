@@ -123,6 +123,8 @@ Source directory: [`maps`](maps)
 - Modeling and generating `User` and `Company` instances
 - Exporting class modules and composing them in `index.ts`
 - Named exports versus default exports
+- Reading the `google.maps.Map` constructor declaration
+- DOM nullability and `as HTMLElement` assertions
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

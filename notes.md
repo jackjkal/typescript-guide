@@ -1475,3 +1475,64 @@ Loading the Google Maps script creates a runtime global named `google`, but that
 A triple-slash `types` directive is a compiler instruction that declares a dependency on a type declaration package. It is conceptually similar to importing type information, but it emits no JavaScript and does not load the Google Maps runtime script. The HTML `<script>` element remains responsible for the runtime API; the directive is only for compile-time checking and editor assistance.
 
 Triple-slash directives must appear at the top of the file before executable statements. With the declarations included, TypeScript can recognize names under `google.maps` and provide checking and autocomplete for the Maps API.
+
+### Reading the `google.maps.Map` declaration
+
+The Google Maps declaration file is another source of API documentation:
+
+```text
+node_modules/@types/google.maps/index.d.ts
+```
+
+Its `Map` declaration includes inheritance and constructor information:
+
+```ts
+export class Map extends google.maps.MVCObject {
+  constructor(mapDiv: HTMLElement, opts?: google.maps.MapOptions);
+}
+```
+
+This tells us that:
+
+- `Map` inherits from `google.maps.MVCObject`.
+- Its first constructor argument must be an `HTMLElement` in which the map can render.
+- Its second `MapOptions` argument is optional, as indicated by `?`.
+
+The HTML therefore needs a map container:
+
+```html
+<div id="map" style="height: 100%;"></div>
+```
+
+The application retrieves it and passes it to the constructor:
+
+```ts
+new google.maps.Map(
+  document.getElementById("map") as HTMLElement
+);
+```
+
+`document.getElementById()` has the type `HTMLElement | null` because the requested element might not exist. The Maps constructor accepts only `HTMLElement`, so TypeScript reports an error until the nullable possibility is handled.
+
+`as HTMLElement` is a **type assertion**: it tells TypeScript that we know this result is an element. It does not create the element, check the DOM, or prevent `null` at runtime. The assertion is reasonable only because the matching element is deliberately present in the HTML; an explicit null check would provide stronger runtime protection.
+
+### Initializing the map
+
+The completed constructor call supplies both the map container and its initial options:
+
+```ts
+new google.maps.Map(document.getElementById("map") as HTMLElement, {
+  zoom: 1,
+  center: {
+    lat: 0,
+    lng: 0,
+  },
+});
+```
+
+- The first argument identifies the DOM element that Google Maps should fill.
+- `zoom` controls the initial map scale; `1` shows a broad view of the world.
+- `center` supplies the initial latitude and longitude.
+- The options object is checked against the `google.maps.MapOptions` type discovered in the declaration file.
+
+The map container also needs a nonzero height in the HTML. With `height: 100%`, the initialized map is visible in the browser rather than rendering into a zero-height `div`.
