@@ -1653,3 +1653,36 @@ customMap.addUserMarker(user);
 ```
 
 The marker now appears at the randomly generated user's location in the browser. The empty `addCompanyMarker()` method remains as the duplicated implementation path that the upcoming refactor will address.
+
+### Completing the intentionally duplicated implementation
+
+The company-specific method repeats the same marker construction:
+
+```ts
+addCompanyMarker(company: Company): void {
+  new google.maps.Marker({
+    map: this.googleMap,
+    position: {
+      lat: company.location.lat,
+      lng: company.location.lng,
+    },
+  });
+}
+```
+
+The entry point now displays both generated locations:
+
+```ts
+customMap.addUserMarker(user);
+customMap.addCompanyMarker(company);
+```
+
+Both markers work, but the two methods differ only in their parameter names and types. Each one reads the same `location.lat` and `location.lng` structure and performs the same Google Maps operation.
+
+```text
+addUserMarker(user)       ─┐
+                           ├─ same marker creation logic
+addCompanyMarker(company) ─┘
+```
+
+This duplication makes `CustomMap` harder to extend: every new mappable entity would appear to require another nearly identical method. The next lesson will refactor around the shared structure required to place any entity on the map.
