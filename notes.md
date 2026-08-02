@@ -1777,3 +1777,29 @@ There is no need to annotate `user` as `Mappable` or make `User` explicitly impl
 This leaves `CustomMap` as a standalone wrapper whose public API is independent of this application's entity classes. The design is therefore easy to reuse: future projects can supply entirely different objects as long as they satisfy `Mappable`.
 
 > **Modern compatibility note:** The wrapper design remains reusable, but its current marker implementation uses the deprecated `google.maps.Marker`. Reusing the file in a new application would require modernizing that internal implementation to `AdvancedMarkerElement` and completing its associated setup. The important reusable idea is the stable, application-owned interface around the third-party API.
+
+### Marker click events and info windows
+
+The first step toward entity-specific popups is to retain the newly created marker and register a click listener on it:
+
+```ts
+const marker = new google.maps.Marker({
+  map: this.googleMap,
+  position: {
+    lat: mappable.location.lat,
+    lng: mappable.location.lng,
+  },
+});
+
+marker.addListener("click", () => {
+  const infoWindow = new google.maps.InfoWindow({
+    content: "Hi there!",
+  });
+
+  infoWindow.open(this.googleMap, marker);
+});
+```
+
+`addListener()` connects the marker's `click` event to a callback. That callback creates an `InfoWindow` and opens it on the private map, anchored to the clicked marker. The arrow function is also significant: it preserves the surrounding `CustomMap` instance as `this`, allowing the callback to access `this.googleMap`.
+
+For now every popup contains the same placeholder text. Making the content relevant to a user or company will require extending the `Mappable` contract without reintroducing concrete `User` and `Company` dependencies into `CustomMap`.

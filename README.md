@@ -135,6 +135,7 @@ Source directory: [`maps`](maps)
 - Structural gatekeeping and values satisfying multiple interfaces
 - Implicit interface checks at function calls
 - A reusable map wrapper independent of application entities
+- Marker click listeners and anchored info windows
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 
