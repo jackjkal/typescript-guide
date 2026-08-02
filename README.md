@@ -129,6 +129,8 @@ Source directory: [`maps`](maps)
 - A private `googleMap` field and configurable container ID
 - Classes as both runtime values and instance types
 - Refactoring duplicated user/company marker methods
+- Union parameters and access to shared properties
+- The scaling problem with concrete-type unions
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 

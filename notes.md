@@ -1686,3 +1686,37 @@ addCompanyMarker(company) ─┘
 ```
 
 This duplication makes `CustomMap` harder to extend: every new mappable entity would appear to require another nearly identical method. The next lesson will refactor around the shared structure required to place any entity on the map.
+
+### First refactor: a union parameter
+
+The two marker methods can be combined by allowing the parameter to be either entity type:
+
+```ts
+addMarker(mappable: User | Company): void {
+  new google.maps.Marker({
+    map: this.googleMap,
+    position: {
+      lat: mappable.location.lat,
+      lng: mappable.location.lng,
+    },
+  });
+}
+```
+
+The `|` creates a union: `mappable` may be a `User` **or** a `Company`. Until code determines which member of the union it received, TypeScript permits direct access only to properties that are safe on every possible type.
+
+```text
+User properties:       name, location
+Company properties:    companyName, catchPhrase, location
+Safe without narrowing:                    location
+```
+
+That is why VS Code autocomplete shows only `location` after typing `mappable.`. A user-specific property such as `name` is unsafe because the value might be a company; a company-specific property such as `companyName` is unsafe because it might be a user. Accessing those properties would require first narrowing the union to a particular member.
+
+This removes the duplicated marker logic, but the design still does not scale. `CustomMap` must import every supported class and list it in the union:
+
+```ts
+User | Company | CarLot | Park
+```
+
+Every new mappable entity would require editing `CustomMap`, even though the method cares only about the shared `location` structure. The next refactor will remove that unnecessary knowledge of concrete classes.
