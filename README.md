@@ -136,6 +136,8 @@ Source directory: [`maps`](maps)
 - Implicit interface checks at function calls
 - A reusable map wrapper independent of application entities
 - Marker click listeners and anchored info windows
+- Entity-owned popup content through the `Mappable` contract
+- What a `string` return type does—and does not—validate
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 

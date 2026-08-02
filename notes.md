@@ -1803,3 +1803,38 @@ marker.addListener("click", () => {
 `addListener()` connects the marker's `click` event to a callback. That callback creates an `InfoWindow` and opens it on the private map, anchored to the clicked marker. The arrow function is also significant: it preserves the surrounding `CustomMap` instance as `this`, allowing the callback to access `this.googleMap`.
 
 For now every popup contains the same placeholder text. Making the content relevant to a user or company will require extending the `Mappable` contract without reintroducing concrete `User` and `Company` dependencies into `CustomMap`.
+
+### Making each entity responsible for its marker content
+
+`CustomMap` should not need to know how a user or company ought to be presented. That responsibility belongs to the object being mapped, so the `Mappable` interface gains another requirement:
+
+```ts
+interface Mappable {
+  location: {
+    lat: number;
+    lng: number;
+  };
+  markerContent(): string;
+}
+```
+
+The map can now request content polymorphically without checking which concrete class it received:
+
+```ts
+const infoWindow = new google.maps.InfoWindow({
+  content: mappable.markerContent(),
+});
+```
+
+Each class decides what that method returns. `User` returns its name, while `Company` returns HTML containing its company name and catchphrase. Adding the method to the interface strengthens the gatekeeper: an object now needs both valid coordinates and a `markerContent(): string` method to be accepted by `addMarker()`.
+
+This preserves the dependency direction:
+
+```text
+CustomMap asks what it needs: location + markerContent()
+Each mappable object decides how to fulfill those needs
+```
+
+As a class-layout convention, fields are normally listed first, followed by the constructor and then the other methods. This does not change the program's behavior; it makes classes easier to scan consistently.
+
+> **Type-checking limit:** `markerContent(): string` guarantees only that the method returns a string. TypeScript does not determine whether that string contains valid HTML, meaningful content, or safe content. Because an info window may render HTML, any untrusted values would need suitable escaping or sanitization at runtime.
