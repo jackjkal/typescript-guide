@@ -126,6 +126,7 @@ Source directory: [`maps`](maps)
 - Reading the `google.maps.Map` constructor declaration
 - DOM nullability and `as HTMLElement` assertions
 - Encapsulating the Google map behind an application-owned wrapper
+- A private `googleMap` field and configurable container ID
 - Watching for older starter dependency incompatibilities
 
 ## Running the examples

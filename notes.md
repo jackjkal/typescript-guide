@@ -1559,3 +1559,34 @@ This wrapper acts as a controlled boundary:
 - If the third-party API or initialization changes, fewer application files need to change.
 
 This is encapsulation rather than a security mechanism. The goal is to reduce accidental misuse and coupling by hiding implementation details behind a smaller, application-specific API. The concern is deliberately simple in this project, but the pattern becomes valuable when wrapping large or unstable third-party libraries.
+
+The wrapper is implemented in its own class module:
+
+```ts
+export class CustomMap {
+  private googleMap: google.maps.Map;
+
+  constructor(divId: string) {
+    this.googleMap = new google.maps.Map(
+      document.getElementById(divId) as HTMLElement,
+      {
+        zoom: 1,
+        center: {
+          lat: 0,
+          lng: 0,
+        },
+      },
+    );
+  }
+}
+```
+
+The `private googleMap` field holds the real third-party map. Outside code cannot access that field through TypeScript, so it no longer sees the full `google.maps.Map` API. Only methods intentionally added to `CustomMap` will become part of the application's supported map API.
+
+The constructor accepts a `divId: string` rather than hard-coding `"map"`. This makes the wrapper reusable with any appropriately configured HTML container:
+
+```ts
+const customMap = new CustomMap("map");
+```
+
+The entry point now depends on `CustomMap` instead of constructing a Google map directly. This significantly reduces the API surface visible to the rest of the application and makes the intended operations clearer to other engineers.
