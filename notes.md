@@ -1536,3 +1536,26 @@ new google.maps.Map(document.getElementById("map") as HTMLElement, {
 - The options object is checked against the `google.maps.MapOptions` type discovered in the declaration file.
 
 The map container also needs a nonzero height in the HTML. With `height: 100%`, the initialized map is visible in the browser rather than rendering into a zero-height `div`.
+
+### Hiding the third-party map behind our own class
+
+The raw `google.maps.Map` object exposes a large API. If it remains directly available throughout the application, any code can call any of its methods, including operations the application did not intend to support.
+
+The planned refactor introduces an application-owned map class that creates and stores the Google map internally:
+
+```text
+application code
+      ↓ uses a small supported API
+our map wrapper
+      ↓ delegates internally
+google.maps.Map
+```
+
+This wrapper acts as a controlled boundary:
+
+- Application code sees only the operations our class deliberately exposes.
+- Google-specific construction and configuration live in one place.
+- Other developers are guided away from calling arbitrary Google Maps methods directly.
+- If the third-party API or initialization changes, fewer application files need to change.
+
+This is encapsulation rather than a security mechanism. The goal is to reduce accidental misuse and coupling by hiding implementation details behind a smaller, application-specific API. The concern is deliberately simple in this project, but the pattern becomes valuable when wrapping large or unstable third-party libraries.
