@@ -138,6 +138,7 @@ Source directory: [`maps`](maps)
 - Marker click listeners and anchored info windows
 - Entity-owned popup content through the `Mappable` contract
 - What a `string` return type does—and does not—validate
+- Explicit `implements` clauses for better-located errors and clearer intent
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 

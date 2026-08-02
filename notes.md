@@ -1838,3 +1838,38 @@ Each mappable object decides how to fulfill those needs
 As a class-layout convention, fields are normally listed first, followed by the constructor and then the other methods. This does not change the program's behavior; it makes classes easier to scan consistently.
 
 > **Type-checking limit:** `markerContent(): string` guarantees only that the method returns a string. TypeScript does not determine whether that string contains valid HTML, meaningful content, or safe content. Because an info window may render HTML, any untrusted values would need suitable escaping or sanitization at runtime.
+
+### Explicitly implementing an interface for better errors
+
+Structural typing already checks an object when it is passed to `addMarker()`. However, if a new requirement is added to `Mappable`, the resulting error initially appears at the call site:
+
+```ts
+customMap.addMarker(user); // User is missing the new requirement
+```
+
+That error proves an incompatible value reached the function, but it may be some distance from the class definition that actually needs to be updated. The interface can instead be exported and the classes can explicitly declare their intent to satisfy it:
+
+```ts
+// CustomMap.ts
+export interface Mappable {
+  location: {
+    lat: number;
+    lng: number;
+  };
+  markerContent(): string;
+  color: string;
+}
+
+// User.ts
+import { Mappable } from "./CustomMap";
+
+export class User implements Mappable {
+  // ...must provide every Mappable member
+}
+```
+
+Now TypeScript checks `User` against `Mappable` at the class declaration. If `color` or another required member is missing, the editor can point directly at `User implements Mappable`, closer to the true source of the problem. `Company` can make the same declaration.
+
+The `implements` clause is optional: it is not needed for instances to pass TypeScript's structural compatibility check. Its benefits are earlier, better-located feedback and clear documentation to other engineers that the class is deliberately designed to satisfy that contract.
+
+`implements` is also a compile-time check only. It does not add missing members, alter the class at runtime, or change the generated JavaScript; the class must still define the required properties and methods itself.
