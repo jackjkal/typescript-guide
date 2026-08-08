@@ -1879,3 +1879,42 @@ The `implements` clause is optional: it is not needed for instances to pass Type
 A recurring organization pattern in the course is to place the interface that describes how other code can collaborate with a class near the top of that class's module, followed by the class itself. `CustomMap.ts` demonstrates it with the exported `Mappable` contract followed by `CustomMap`.
 
 Keeping the contract beside its consumer makes their relationship easy to discover: `CustomMap` owns the requirements for values passed to `addMarker()`, while `User`, `Company`, and future entity classes decide whether to implement those requirements. This concludes the first design-pattern application.
+
+## Sort project
+
+This application uses the TypeScript compiler directly instead of relying on Parcel. Its source and generated files are separated into two directories:
+
+```text
+sort/
+├── src/       TypeScript source files
+├── build/     Compiler output
+└── tsconfig.json
+```
+
+### Configuring the compiler
+
+`tsconfig.json` marks the directory as a TypeScript project and stores the compiler configuration. When `tsc` is run without explicit input filenames, it searches for and loads this configuration automatically.
+
+The initial file-layout options are:
+
+```json
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build"
+  }
+}
+```
+
+- `rootDir` tells the compiler where the project's input source tree begins.
+- `outDir` tells it where to place emitted JavaScript and other configured output files.
+
+From the `sort` directory, running `tsc` compiles the project according to that configuration. Running watch mode keeps the compiler active and recompiles after saved source changes:
+
+```sh
+tsc -w
+```
+
+The equivalent long option is `tsc --watch`. If TypeScript is installed locally rather than globally, use `npx tsc` or `npx tsc -w` so the project-accessible compiler is selected.
+
+> Pass the project to `tsc` rather than specifying an individual `.ts` filename when the intention is to use `tsconfig.json`. Supplying source filenames directly invokes a different command-line compilation mode, as seen earlier in the course.

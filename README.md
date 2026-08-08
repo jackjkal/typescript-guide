@@ -143,6 +143,16 @@ Source directory: [`maps`](maps)
 - Legacy `Marker` versus `AdvancedMarkerElement`
 - Watching for older starter dependency incompatibilities
 
+### 10. [Sort application](notes.md#sort-project)
+
+Source directory: [`sort`](sort)
+
+- Compiling TypeScript directly without Parcel
+- Separating source files and emitted build output
+- Configuring `rootDir` and `outDir` in `tsconfig.json`
+- Project compilation with `tsc`
+- Automatic recompilation with `tsc -w`
+
 ## Running the examples
 
 Run a TypeScript file directly:
