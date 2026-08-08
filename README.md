@@ -152,6 +152,8 @@ Source directory: [`sort`](sort)
 - Configuring `rootDir` and `outDir` in `tsconfig.json`
 - Project compilation with `tsc`
 - Automatic recompilation with `tsc -w`
+- Restarting compiled code with `nodemon`
+- Running the compiler and application together with `concurrently`
 
 ## Running the examples
 

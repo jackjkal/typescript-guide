@@ -1918,3 +1918,36 @@ tsc -w
 The equivalent long option is `tsc --watch`. If TypeScript is installed locally rather than globally, use `npx tsc` or `npx tsc -w` so the project-accessible compiler is selected.
 
 > Pass the project to `tsc` rather than specifying an individual `.ts` filename when the intention is to use `tsconfig.json`. Supplying source filenames directly invokes a different command-line compilation mode, as seen earlier in the course.
+
+### Compiling and restarting together
+
+Running `node build/index.js` manually after every edit interrupts the development loop. This project adds two command-line development tools:
+
+- `nodemon` watches the compiled output and restarts Node when that output changes.
+- `concurrently` runs multiple long-lived commands in the same terminal.
+
+The npm scripts divide the workflow into two processes and then start both:
+
+```json
+{
+  "scripts": {
+    "start:build": "tsc -w",
+    "start:run": "nodemon build/index.js",
+    "start": "concurrently npm:start:*"
+  }
+}
+```
+
+Running `npm start` creates this feedback loop:
+
+```text
+edit src/*.ts
+     ↓
+tsc -w emits build/*.js
+     ↓
+nodemon notices the emitted change
+     ↓
+Node restarts with the latest JavaScript
+```
+
+The `start:*` pattern tells `concurrently` to run the matching `start:build` and `start:run` scripts. These tools automate development only; they do not change the TypeScript program or its production behavior.
