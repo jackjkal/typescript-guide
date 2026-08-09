@@ -2045,3 +2045,44 @@ For parity with the lesson, this project sets:
 ```
 
 That restores the traditional optimistic behavior in which indexing a `number[]` produces `number`. Disabling it is reasonable for following the course, and `false` is the compiler's default; the newer generated `tsconfig.json` template had opted into the stricter check. If the setting remained enabled, the code would instead need to prove or assert that the indexed values exist—for example with explicit checks or carefully placed non-null assertions (`!`).
+
+### Why strings require different operations
+
+The eventual goal is to reuse the sorting algorithm with number arrays, strings, and linked lists. The loops themselves express a general algorithm, but the current implementation assumes that every collection behaves like a mutable number array.
+
+Strings and arrays have some surface similarities:
+
+```ts
+const value = "Xaaa";
+
+value.length; // 4
+value[0];     // "X"
+```
+
+The crucial difference is that strings are immutable. Indexing can read a character, but assigning a replacement does not mutate the string:
+
+```ts
+value[0] = "a"; // cannot perform the array-style swap
+```
+
+Consequently, the current swap implementation cannot work for strings. A string-specific operation must construct and assign a new string containing the characters in their exchanged positions.
+
+Comparison also needs an explicit policy. JavaScript compares strings lexicographically using their UTF-16 code units, so uppercase and lowercase letters do not have the intuitive alphabetical relationship a person might expect:
+
+```ts
+"X" > "a";          // false
+"X".charCodeAt(0);  // 88
+"a".charCodeAt(0);  // 97
+```
+
+Those particular values also appear in the ASCII table because ASCII is a subset of Unicode. More precisely, JavaScript strings use UTF-16 rather than being limited to ASCII. A case-insensitive comparison could normalize both characters—such as with `toLowerCase()`—before comparing them.
+
+This exposes the two collection-dependent operations hidden inside the otherwise reusable algorithm:
+
+```text
+Reusable bubble-sort control flow
+├── compare the values at two positions
+└── swap the values at two positions
+```
+
+A number array, string, and linked list can each supply those operations differently. The upcoming design work will separate **how bubble sort proceeds** from **how a particular collection compares and swaps its contents**.

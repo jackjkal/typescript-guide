@@ -160,6 +160,9 @@ Source directory: [`sort`](sort)
 - Constructor parameter properties
 - Implementing bubble sort's nested loops and swap
 - Array indexing with `noUncheckedIndexedAccess`
+- Array-like string access versus string immutability
+- UTF-16 character ordering and case normalization
+- Isolating collection-specific comparison and swapping
 
 ## Running the examples
 
