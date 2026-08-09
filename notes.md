@@ -2009,3 +2009,39 @@ class Sorter {
 ```
 
 The modifier is what activates the shortcut. A constructor parameter without `public`, `private`, `protected`, or `readonly` remains an ordinary parameter and does not automatically become an instance property. Here `public` also allows callers to read the sorted collection afterward through `sorter.collection`.
+
+### Implementing bubble sort
+
+The `sort()` method now performs the repeated comparison and swap:
+
+```ts
+sort(): void {
+  const { length } = this.collection;
+
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < length - i - 1; j++) {
+      if (this.collection[j] > this.collection[j + 1]) {
+        const leftHand = this.collection[j];
+        this.collection[j] = this.collection[j + 1];
+        this.collection[j + 1] = leftHand;
+      }
+    }
+  }
+}
+```
+
+The inner loop stops at `length - i - 1` for two reasons: `j + 1` must remain within the collection, and each completed outer pass has already moved another largest remaining value into its final position at the right-hand end. There is no need to compare that sorted tail again.
+
+The swap temporarily saves the left value so it is not lost when the right value is assigned into its position. For the example collection, the final public value is `[-5, 0, 3, 10]`.
+
+#### Aside: `noUncheckedIndexedAccess`
+
+The course code predates TypeScript's `noUncheckedIndexedAccess` option, introduced in TypeScript 4.1. With the option enabled, an indexed array access such as `this.collection[j]` has type `number | undefined`, because an arbitrary numeric index could be outside the array. TypeScript does not prove from these loop bounds that both `j` and `j + 1` are safe, so the comparison and assignments produce errors.
+
+For parity with the lesson, this project sets:
+
+```json
+"noUncheckedIndexedAccess": false
+```
+
+That restores the traditional optimistic behavior in which indexing a `number[]` produces `number`. Disabling it is reasonable for following the course, and `false` is the compiler's default; the newer generated `tsconfig.json` template had opted into the stricter check. If the setting remained enabled, the code would instead need to prove or assert that the indexed values exist—for example with explicit checks or carefully placed non-null assertions (`!`).

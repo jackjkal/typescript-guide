@@ -158,6 +158,8 @@ Source directory: [`sort`](sort)
 - Using sorting as an exercise in reusable code design
 - Scaffolding the `Sorter` class
 - Constructor parameter properties
+- Implementing bubble sort's nested loops and swap
+- Array indexing with `noUncheckedIndexedAccess`
 
 ## Running the examples
 
