@@ -1973,3 +1973,39 @@ For example, one pass through `[5, 3, 4]` behaves like this:
 Each pass moves—or “bubbles”—a large out-of-order value toward the end. The nested loops serve different purposes: the inner loop processes neighboring pairs during one pass, while the outer loop causes the collection to be processed repeatedly.
 
 > Bubble sort is useful pedagogically because its required operations are easy to isolate, but it is inefficient for large collections. The course is using it to teach reusable TypeScript design, not recommending it as a general-purpose replacement for built-in sorting facilities.
+
+### Scaffolding the `Sorter` class
+
+The first implementation accepts an array of numbers and provides an empty `sort()` method that will eventually contain the algorithm:
+
+```ts
+class Sorter {
+  constructor(public collection: number[]) {}
+
+  sort(): void {}
+}
+
+const sorter = new Sorter([10, 3, -5, 0]);
+sorter.sort();
+console.log(sorter.collection);
+```
+
+Putting an access modifier on a constructor parameter creates a **parameter property**. This shorthand:
+
+```ts
+constructor(public collection: number[]) {}
+```
+
+is equivalent to explicitly declaring and assigning the field:
+
+```ts
+class Sorter {
+  collection: number[];
+
+  constructor(collection: number[]) {
+    this.collection = collection;
+  }
+}
+```
+
+The modifier is what activates the shortcut. A constructor parameter without `public`, `private`, `protected`, or `readonly` remains an ordinary parameter and does not automatically become an instance property. Here `public` also allows callers to read the sorted collection afterward through `sorter.collection`.

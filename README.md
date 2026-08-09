@@ -156,6 +156,8 @@ Source directory: [`sort`](sort)
 - Running the compiler and application together with `concurrently`
 - Bubble sort's repeated compare-and-swap passes
 - Using sorting as an exercise in reusable code design
+- Scaffolding the `Sorter` class
+- Constructor parameter properties
 
 ## Running the examples
 
