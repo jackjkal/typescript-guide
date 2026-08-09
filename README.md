@@ -154,6 +154,8 @@ Source directory: [`sort`](sort)
 - Automatic recompilation with `tsc -w`
 - Restarting compiled code with `nodemon`
 - Running the compiler and application together with `concurrently`
+- Bubble sort's repeated compare-and-swap passes
+- Using sorting as an exercise in reusable code design
 
 ## Running the examples
 

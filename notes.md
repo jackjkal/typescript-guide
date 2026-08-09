@@ -1951,3 +1951,25 @@ Node restarts with the latest JavaScript
 ```
 
 The `start:*` pattern tells `concurrently` to run the matching `start:build` and `start:run` scripts. These tools automate development only; they do not change the TypeScript program or its production behavior.
+
+### Sorting as a code-reuse exercise
+
+The application will use bubble sort to explore how one piece of sorting logic can work with different data structures. The particular algorithm is intentionally basic; the important design question is how to reuse its compare-and-swap behavior.
+
+Bubble sort repeatedly walks through a collection and examines neighboring pairs:
+
+1. Compare the element on the left with the element immediately to its right.
+2. If the left element is greater, swap the pair.
+3. Move one position forward and compare the next pair.
+4. Make additional passes through the collection until everything is ordered.
+
+For example, one pass through `[5, 3, 4]` behaves like this:
+
+```text
+[5, 3, 4]  compare 5 and 3 → swap → [3, 5, 4]
+[3, 5, 4]  compare 5 and 4 → swap → [3, 4, 5]
+```
+
+Each pass moves—or “bubbles”—a large out-of-order value toward the end. The nested loops serve different purposes: the inner loop processes neighboring pairs during one pass, while the outer loop causes the collection to be processed repeatedly.
+
+> Bubble sort is useful pedagogically because its required operations are easy to isolate, but it is inefficient for large collections. The course is using it to teach reusable TypeScript design, not recommending it as a general-purpose replacement for built-in sorting facilities.
