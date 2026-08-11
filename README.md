@@ -165,6 +165,8 @@ Source directory: [`sort`](sort)
 - Isolating collection-specific comparison and swapping
 - The initial `number[] | string` union approach
 - Shared read capabilities versus unsafe indexed writes
+- Type guards and control-flow narrowing
+- Primitive `typeof` checks and constructor-based `instanceof` checks
 
 ## Running the examples
 

@@ -2125,3 +2125,35 @@ union:    read by index ✓   write by index ✗
 ```
 
 The upcoming implementation will narrow the union before running collection-specific logic. Once TypeScript knows which member it has, the array branch regains writable indexing. This can make the current error disappear, but the broader design will still be intentionally awkward so its scaling problems become visible.
+
+### Type guards and narrowing
+
+A **type guard** is a runtime check whose result TypeScript can use to narrow a broader static type. Outside either check, `this.collection` remains `number[] | string`. Inside a successful branch, TypeScript knows which specific union member it has.
+
+The array branch uses `instanceof`:
+
+```ts
+if (this.collection instanceof Array) {
+  // this.collection is number[] here
+  this.collection[j] = this.collection[j + 1];
+}
+```
+
+Because the string possibility has been eliminated inside this block, writable array indexing is available again and the earlier error disappears. This is control-flow analysis: TypeScript follows the condition and changes its understanding of the value only along the path where that condition is true.
+
+The string branch uses `typeof`:
+
+```ts
+if (typeof this.collection === "string") {
+  // this.collection is string here
+}
+```
+
+As a practical starting rule:
+
+- Use `typeof` to narrow primitive values such as `string`, `number`, and `boolean`.
+- Use `instanceof` when checking whether an object was constructed by a runtime class or constructor function.
+
+`typeof` can be called on objects, but usually returns the broad result `"object"`, which is not enough to distinguish an array from most other objects. (`typeof null` also famously returns `"object"`.)
+
+> **TA note:** The primitive/`typeof` and object/`instanceof` rule is a useful introduction, not the complete narrowing system. Arrays are commonly checked with `Array.isArray()`, and TypeScript can also narrow with equality checks, the `in` operator, discriminated properties, truthiness checks, and user-defined type predicates. `instanceof` requires something that exists at runtime, so it cannot directly test a TypeScript interface because interfaces are erased during compilation.
