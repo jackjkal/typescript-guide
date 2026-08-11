@@ -2086,3 +2086,42 @@ Reusable bubble-sort control flow
 ```
 
 A number array, string, and linked list can each supply those operations differently. The upcoming design work will separate **how bubble sort proceeds** from **how a particular collection compares and swaps its contents**.
+
+### Less-than-ideal attempt: a union collection
+
+A natural first attempt is to widen the constructor parameter so that `Sorter` accepts either a number array or a string:
+
+```ts
+constructor(public collection: number[] | string) {}
+```
+
+This revisits an important union rule: until the code narrows the value to one member, TypeScript permits only operations that are safe for **every** member of the union.
+
+Both `number[]` and `string` have a numeric `length`, so this remains safe:
+
+```ts
+const { length } = this.collection;
+```
+
+Both types also support reading through a numeric index, although the result could now be a number or a string character:
+
+```ts
+this.collection[j]; // number | string
+```
+
+Indexed writing is different. A number array permits it, but a string does not because strings are immutable. Since `collection` might be a string, these assignments are rejected:
+
+```ts
+this.collection[j] = this.collection[j + 1];
+this.collection[j + 1] = leftHand;
+```
+
+The diagnostic that the index signature “only permits reading” is therefore not merely comparing named properties. TypeScript also understands the members' supported operations and whether indexed access is readable or writable.
+
+```text
+number[]: read by index ✓   write by index ✓
+string:   read by index ✓   write by index ✗
+union:    read by index ✓   write by index ✗
+```
+
+The upcoming implementation will narrow the union before running collection-specific logic. Once TypeScript knows which member it has, the array branch regains writable indexing. This can make the current error disappear, but the broader design will still be intentionally awkward so its scaling problems become visible.

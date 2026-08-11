@@ -163,6 +163,8 @@ Source directory: [`sort`](sort)
 - Array-like string access versus string immutability
 - UTF-16 character ordering and case normalization
 - Isolating collection-specific comparison and swapping
+- The initial `number[] | string` union approach
+- Shared read capabilities versus unsafe indexed writes
 
 ## Running the examples
 
