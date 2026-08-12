@@ -2157,3 +2157,22 @@ As a practical starting rule:
 `typeof` can be called on objects, but usually returns the broad result `"object"`, which is not enough to distinguish an array from most other objects. (`typeof null` also famously returns `"object"`.)
 
 > **TA note:** The primitive/`typeof` and object/`instanceof` rule is a useful introduction, not the complete narrowing system. Arrays are commonly checked with `Array.isArray()`, and TypeScript can also narrow with equality checks, the `in` operator, discriminated properties, truthiness checks, and user-defined type predicates. `instanceof` requires something that exists at runtime, so it cannot directly test a TypeScript interface because interfaces are erased during compilation.
+
+### Why the union-and-guards design does not scale
+
+The type guards make the code compile, but they do not make it reusable. Every new sortable collection creates two changes inside `Sorter`:
+
+1. Add its concrete type to the constructor's union.
+2. Add another type guard and collection-specific branch inside `sort()`.
+
+```text
+number[] | string
+           + LinkedList
+           + SomeFutureCollection
+                  ↓
+sort() accumulates more if/else branches
+```
+
+That means adding a collection requires reopening and modifying the sorting algorithm itself. `Sorter` becomes coupled to every concrete representation it supports, and the nested loop mixes two different responsibilities: controlling bubble sort and knowing how each collection compares and swaps values.
+
+The design is therefore **closed to extension unless existing code is modified**. A better approach will keep the algorithm stable and make each collection provide the small set of operations the algorithm requires. The following lessons will refactor toward that separation.

@@ -167,6 +167,8 @@ Source directory: [`sort`](sort)
 - Shared read capabilities versus unsafe indexed writes
 - Type guards and control-flow narrowing
 - Primitive `typeof` checks and constructor-based `instanceof` checks
+- Why union-and-guard branches do not scale
+- Separating the stable algorithm from collection-specific behavior
 
 ## Running the examples
 
