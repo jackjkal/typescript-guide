@@ -169,6 +169,9 @@ Source directory: [`sort`](sort)
 - Primitive `typeof` checks and constructor-based `instanceof` checks
 - Why union-and-guard branches do not scale
 - Separating the stable algorithm from collection-specific behavior
+- Identifying `compare` and `swap` as the varying operations
+- Planning the `NumbersCollection` wrapper
+- Separating algorithm control flow from data representation
 
 ## Running the examples
 

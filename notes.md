@@ -2176,3 +2176,61 @@ sort() accumulates more if/else branches
 That means adding a collection requires reopening and modifying the sorting algorithm itself. `Sorter` becomes coupled to every concrete representation it supports, and the nested loop mixes two different responsibilities: controlling bubble sort and knowing how each collection compares and swaps values.
 
 The design is therefore **closed to extension unless existing code is modified**. A better approach will keep the algorithm stable and make each collection provide the small set of operations the algorithm requires. The following lessons will refactor toward that separation.
+
+### Intermediate refactor: extracting collection-specific behavior
+
+Before introducing an interface, the refactor starts by identifying exactly which parts of bubble sort vary between collection types:
+
+1. **Comparison:** determine whether the values at two positions are out of order.
+2. **Swapping:** exchange the values at two positions using operations appropriate for that representation.
+
+The nested loops do not need to know whether the underlying data is a number array, string, or linked list. They need only the collection's length and the ability to request those two operations.
+
+The number-array-specific behavior will move into a wrapper class called `NumbersCollection`:
+
+```ts
+class NumbersCollection {
+  constructor(public data: number[]) {}
+
+  get length(): number {
+    return this.data.length;
+  }
+
+  compare(leftIndex: number, rightIndex: number): boolean {
+    // Decide whether these numeric elements should be swapped.
+  }
+
+  swap(leftIndex: number, rightIndex: number): void {
+    // Perform a mutable array swap.
+  }
+}
+```
+
+`data` is merely the chosen field name for the wrapped array; it has no special TypeScript meaning. The important change is that `Sorter` will collaborate with the wrapper rather than directly manipulating `number[]`:
+
+```text
+Before
+Sorter
+├── owns bubble-sort loops
+└── knows how to compare and mutate number[]
+
+Intermediate design
+Sorter
+└── owns generic bubble-sort loops
+         │ length / compare() / swap()
+         ▼
+NumbersCollection
+└── owns number[] and its specialized operations
+```
+
+The intended generic-looking control flow becomes:
+
+```ts
+if (this.collection.compare(j, j + 1)) {
+  this.collection.swap(j, j + 1);
+}
+```
+
+This is a separation of responsibilities: `Sorter` decides **when** comparison and swapping happen, while `NumbersCollection` decides **how** those operations work for a number array. At this intermediate stage, `Sorter` will still refer directly to `NumbersCollection`; the later interface refactor will remove that remaining concrete dependency.
+
+The saved code currently reflects the start of this transition: `Sorter` has moved into `Sorter.ts`, but its collection type is intentionally left as a TODO and the wrapper has not yet been implemented.
