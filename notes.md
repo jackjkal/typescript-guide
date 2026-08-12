@@ -2287,3 +2287,39 @@ export class Sorter {
 ```
 
 The algorithm is cleaner because it no longer indexes or mutates the raw array itself. However, the constructor is still explicitly typed as `NumbersCollection`, so `Sorter` remains coupled to one concrete collection class. That is the defect the next refactor will address.
+
+### Planning the sortable interface
+
+`Sorter` does not truly require a `NumbersCollection`. It requires any object capable of supporting the three operations used by the algorithm:
+
+```ts
+interface Sortable {
+  length: number;
+  compare(leftIndex: number, rightIndex: number): boolean;
+  swap(leftIndex: number, rightIndex: number): void;
+}
+```
+
+This interface will act as the eligibility contract—or gatekeeper—for sorting:
+
+- `length` tells the loops how many positions to process.
+- `compare()` reports whether two positions are out of order.
+- `swap()` exchanges the values at those positions.
+
+The planned constructor dependency becomes the capability-based type rather than a concrete class:
+
+```ts
+constructor(public collection: Sortable) {}
+```
+
+```text
+NumbersCollection ──┐
+CharactersCollection├── satisfies Sortable ──> Sorter
+LinkedList ─────────┘
+```
+
+Each collection remains responsible for implementing those operations in a way appropriate to its data representation. `Sorter` can remain unchanged as new collection types are added because it knows only the stable `Sortable` contract.
+
+As in the Maps project, defining the interface beside its consumer makes sense: `Sorter` owns the requirements for participating in its algorithm. Structural typing means compatible classes can satisfy the contract implicitly, while an explicit `implements Sortable` declaration can additionally document intent and improve where errors are reported.
+
+This lesson plans the interface-based dependency inversion; the code still uses `NumbersCollection` directly until the following refactor is implemented.

@@ -175,6 +175,8 @@ Source directory: [`sort`](sort)
 - JavaScript getters and property-like `length` access
 - Delegating comparison and swapping to `NumbersCollection`
 - The remaining concrete dependency in `Sorter`
+- Planning the `Sortable` interface as an eligibility contract
+- Depending on `length`, `compare`, and `swap` capabilities
 
 ## Running the examples
 
