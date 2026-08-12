@@ -2233,4 +2233,57 @@ if (this.collection.compare(j, j + 1)) {
 
 This is a separation of responsibilities: `Sorter` decides **when** comparison and swapping happen, while `NumbersCollection` decides **how** those operations work for a number array. At this intermediate stage, `Sorter` will still refer directly to `NumbersCollection`; the later interface refactor will remove that remaining concrete dependency.
 
-The saved code currently reflects the start of this transition: `Sorter` has moved into `Sorter.ts`, but its collection type is intentionally left as a TODO and the wrapper has not yet been implemented.
+### Completing the early `NumbersCollection` solution
+
+The intermediate design is now implemented. `NumbersCollection` wraps the number array and supplies all three operations needed by `Sorter`:
+
+```ts
+export class NumbersCollection {
+  constructor(public data: number[]) {}
+
+  get length(): number {
+    return this.data.length;
+  }
+
+  compare(leftIndex: number, rightIndex: number): boolean {
+    return this.data[leftIndex] > this.data[rightIndex];
+  }
+
+  swap(leftIndex: number, rightIndex: number): void {
+    const leftHand = this.data[leftIndex];
+    this.data[leftIndex] = this.data[rightIndex];
+    this.data[rightIndex] = leftHand;
+  }
+}
+```
+
+The `length` member is a JavaScript **getter** (or accessor). It runs code like a method but is consumed with property syntax:
+
+```ts
+numbersCollection.length;   // getter access
+numbersCollection.length(); // incorrect: it is not called like a method
+```
+
+This is natural here because callers think of length as a characteristic of the collection, while the getter can derive it from `data.length` rather than storing a second value that might become stale.
+
+`Sorter` now delegates the representation-specific work:
+
+```ts
+export class Sorter {
+  constructor(public collection: NumbersCollection) {}
+
+  sort(): void {
+    const { length } = this.collection;
+
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < length - i - 1; j++) {
+        if (this.collection.compare(j, j + 1)) {
+          this.collection.swap(j, j + 1);
+        }
+      }
+    }
+  }
+}
+```
+
+The algorithm is cleaner because it no longer indexes or mutates the raw array itself. However, the constructor is still explicitly typed as `NumbersCollection`, so `Sorter` remains coupled to one concrete collection class. That is the defect the next refactor will address.

@@ -172,6 +172,9 @@ Source directory: [`sort`](sort)
 - Identifying `compare` and `swap` as the varying operations
 - Planning the `NumbersCollection` wrapper
 - Separating algorithm control flow from data representation
+- JavaScript getters and property-like `length` access
+- Delegating comparison and swapping to `NumbersCollection`
+- The remaining concrete dependency in `Sorter`
 
 ## Running the examples
 
